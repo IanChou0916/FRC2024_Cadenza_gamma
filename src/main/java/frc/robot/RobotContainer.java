@@ -17,7 +17,7 @@ import frc.robot.commands.ArmCommands;
 import frc.robot.commands.ArmTestCommands;
 import frc.robot.commands.CollectShootCommands;
 import frc.robot.commands.HangSubSystem;
-import frc.robot.commands.drive.SwerveCommands;
+import frc.robot.commands.drive.SwerveDriveCommand;
 import frc.robot.subsystems.*;
 
 
@@ -41,13 +41,13 @@ public class RobotContainer {
     field = new Field2d();  // This is the field that will be displayed on the SmartDashboard
     SmartDashboard.putData("Field", field);
 
-    swerveSubSystem.setDefaultCommand(new SwerveCommands(
+    swerveSubSystem.setDefaultCommand(new SwerveDriveCommand(
       swerveSubSystem,
         () -> driveController.getRawAxis(XboxController.Axis.kLeftY.value),
         () -> driveController.getRawAxis(XboxController.Axis.kLeftX.value),
         () -> driveController.getRawAxis(XboxController.Axis.kRightX.value),
-        driveController::getLeftBumper,
         driveController::getPOV,
+        driveController::getLeftBumper,
         driveController::getAButton));
 
       collectSubSystem.setDefaultCommand(new CollectShootCommands(
@@ -83,21 +83,22 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
-    new JoystickButton(driveController, 5) // Left Bumper
+    new JoystickButton(driveController, 6) // Right Bumper
            .onTrue(new InstantCommand(swerveSubSystem::zeroGyro));
 
     new JoystickButton(driveController,XboxController.Button.kX.value)
             .onTrue(new InstantCommand(hangSubSystem::setLeftHangMotor));
     new JoystickButton(driveController,XboxController.Button.kY.value)
-            .onTrue(new InstantCommand(hangSubSystem::stopLeftHangMotor));
+            .onTrue(new InstantCommand(()->{
+              hangSubSystem.stopLeftHangMotor();
+              hangSubSystem.stopRightHangMotor();
+            }));
     new JoystickButton(driveController,XboxController.Button.kB.value)
             .onTrue(new InstantCommand(hangSubSystem::reverseLeftHangMotor));
     new JoystickButton(driveController,XboxController.Button.kStart.value)
             .onTrue(new InstantCommand(hangSubSystem::setRightHangMotor));
     new JoystickButton(driveController,XboxController.Button.kBack.value)
             .onTrue(new InstantCommand(hangSubSystem::reverseRightHangMotor));
-    new JoystickButton(driveController,XboxController.Button.kRightBumper.value)
-            .onTrue(new InstantCommand(hangSubSystem::stopRightHangMotor));
 
 
 
