@@ -34,6 +34,9 @@ public class RobotMap {
         public final static int WRIST_MOTOR_ID = 3; // Flex
 
     }
+    public static final class Vision{
+        public final static String LIMELIGHT_CENTER_NAME = "limelight";
+    }
 
  // Using NEO and NEO 550.
 }

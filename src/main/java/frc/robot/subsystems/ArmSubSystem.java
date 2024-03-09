@@ -63,6 +63,7 @@ public class ArmSubSystem extends SubsystemBase {
         mRightArmMotor.burnFlash();
 
         mRightArmMotor.getEncoder().setPosition(0);
+
     }
 
     private void configWristMotor(){
@@ -80,6 +81,8 @@ public class ArmSubSystem extends SubsystemBase {
         mWristMotor.setSmartCurrentLimit(35);
         mWristMotor.setSoftLimit(SoftLimitDirection.kForward, WRIST_FORWARD_LIMIT);
         mWristMotor.setSoftLimit(SoftLimitDirection.kReverse, WRIST_REVERSE_LIMIT);
+        mWristMotor.enableSoftLimit(SoftLimitDirection.kForward,true);
+        mWristMotor.enableSoftLimit(SoftLimitDirection.kReverse,true);
 
         mWristMotor.setIdleMode(IdleMode.kBrake);
         //mWristMotor.getEncoder().setInverted(true);

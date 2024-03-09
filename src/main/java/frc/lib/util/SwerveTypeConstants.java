@@ -51,6 +51,6 @@ public class SwerveTypeConstants {
     public static final double SDSMK4I_L1_DRIVEGEAR = 8.14;
     public static final double SDSMK4I_L1_ANGLEGEAR = 150.0/7.0;
 
-    public static final double SDSMK4I_L2_DRIVEGEAR = 8.14;
+    public static final double SDSMK4I_L2_DRIVEGEAR = 6.75;
     public static final double SDSMK4I_L2_ANGLEGEAR = 150.0/7.0;
 }

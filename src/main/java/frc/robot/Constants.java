@@ -47,14 +47,13 @@ public class Constants {
     public static final double SWERVE_POV_MOVE_SPEED = 0.2;
 
 
-    public static final int SWERVE_ANGLE_CURRENT_LIMIT = 35;
-    public static final double SWERVE_ANGLE_CONTINUOUS_CURRENT_LIMIT = 35;
-    public static final double SWERVE_ANGLE_PEAK_CURRENT_LIMIT = 35;
+    public static final int SWERVE_ANGLE_CURRENT_LIMIT = 40;
+    public static final double SWERVE_ANGLE_PEAK_CURRENT_LIMIT = 60;
     public static final double SWERVE_ANGLE_PEAK_CURRENT_DURATION = 0.1;
     public static final boolean SWERVE_ANGLE_CURRENT_ENABLED = true;
 
-    public static final double SWERVE_DRIVE_CONTINUOUS_CURRENT_LIMIT = 35;
-    public static final double SWERVE_DRIVE_PEAK_CURRENT_LIMIT = 35;
+    public static final double SWERVE_DRIVE_CONTINUOUS_CURRENT_LIMIT = 40;
+    public static final double SWERVE_DRIVE_PEAK_CURRENT_LIMIT = 60;
     public static final double SWERVE_DRIVE_PEAK_CURRENT_DURATION = 0.1;
     public static final boolean SWERVE_DRIVE_CURRENT_ENABLED = true;
 
@@ -188,7 +187,13 @@ public class Constants {
 
 
     public static final class VisionConstants{
-        public static final double[] VISION_PID = {0.0065, 0.0, 0.0};// TODO : Using Tuner.
+        public static final double VISION_POSE_TRUST_WORTHINESS = 1;
+
+        public static final double VISION_AIM_KP = 0.01;
+        public static final double VISION_AIM_KI = 0;
+        public static final double VISION_AIM_KD = 0;
+        public static  final  double VISION_AIM_TOLERANCE = 0;
+        public static final double VISION_AIM_INTEGRATOR_RANGE = 0.5;
     }
 
 
