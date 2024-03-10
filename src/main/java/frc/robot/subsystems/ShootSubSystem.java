@@ -11,8 +11,7 @@ import frc.lib.motor.MotorConfig;
 import frc.robot.Constants;
 import frc.robot.RobotMap;
 
-import static frc.robot.Constants.ShootConstants.SHOOT_INVERTED;
-import static frc.robot.Constants.ShootConstants.SHOOT_PID;
+import static frc.robot.Constants.ShootConstants.*;
 import static frc.robot.RobotMap.ShootMap.LEFT_SHOOTER;
 import static frc.robot.RobotMap.ShootMap.RIGHT_SHOOTER;
 
@@ -52,13 +51,13 @@ public class ShootSubSystem extends SubsystemBase {
         mRightShooter.setControl(shootVoltage.withVelocity(velocity));
     }
     public void shootNote(){
-        mLeftShoooter.setControl(shootVoltage.withVelocity(20));
-        mRightShooter.setControl(shootVoltage.withVelocity(20));
+        mLeftShoooter.setControl(shootVoltage.withVelocity(SHOOT_SPEED));
+        mRightShooter.setControl(shootVoltage.withVelocity(SHOOT_SPEED));
         shootEnabled = true;
     }
     public void stopShoot(){
-        mLeftShoooter.stopMotor();
-        mRightShooter.stopMotor();
+        mLeftShoooter.set(0);
+        mRightShooter.set(0);
         shootEnabled = false;
     }
 

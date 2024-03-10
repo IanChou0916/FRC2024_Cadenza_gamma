@@ -11,7 +11,7 @@ import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 import java.util.function.IntSupplier;
 
-import static frc.robot.Constants.*;
+import static frc.robot.Constants.SwerveConstants.*;
 import static frc.robot.Constants.JoyStickConstants.DRIVE_JOYSTICK_DEADBAND;
 import static frc.robot.Constants.VisionConstants.*;
 import static frc.robot.RobotMap.Vision.LIMELIGHT_CENTER_NAME;

@@ -18,14 +18,14 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.lib.util.SwerveTypeConstants;
 import frc.robot.Constants;
 import frc.robot.RobotMap;
-import static frc.robot.Constants.AutoConstants;
+import static frc.robot.Constants.SwerveConstants.*;
 import static frc.robot.Constants.AutoConstants.SwervePathFollower;
 
 
 public class SwerveSubSystem extends SubsystemBase {
 
     public swerveModule[] swerveModules;
-    public SwerveDriveKinematics swerveDriveKinematics = Constants.SwerveDriveKinematics;
+    public SwerveDriveKinematics swerveDriveKinematics = L2_SwerveDriveKinematics;
     public SwerveDriveOdometry swerveDriveOdometry ;
     public AHRS navX;
 
@@ -39,25 +39,25 @@ public class SwerveSubSystem extends SubsystemBase {
                         RobotMap.FRONT_LEFT_DRIVE_MOTOR_ID,
                         RobotMap.FRONT_LEFT_ANGLE_MOTOR_ID,
                         RobotMap.FRONT_LEFT_CANCODER_MOTOR_ID,
-                        Constants.FRONT_LEFT_ANGLE_OFFSET),
+                        FRONT_LEFT_ANGLE_OFFSET),
                 new swerveModule(
                         1,SwerveTypeConstants.SDSMK4I_L1(),
                         RobotMap.BACK_LEFT_DRIVE_MOTOR_ID,
                         RobotMap.BACK_LEFT_ANGLE_MOTOR_ID,
                         RobotMap.BACK_LEFT_CANCODER_MOTOR_ID,
-                        Constants.BACK_LEFT_ANGLE_OFFSET),
+                        BACK_LEFT_ANGLE_OFFSET),
                 new swerveModule(
                         2,SwerveTypeConstants.SDSMK4I_L1(),
                         RobotMap.BACK_RIGHT_DRIVE_MOTOR_ID,
                         RobotMap.BACK_RIGHT_ANGLE_MOTOR_ID,
                         RobotMap.BACK_RIGHT_CANCODER_MOTOR_ID,
-                        Constants.BACK_RIGHT_ANGLE_OFFSET),
+                        BACK_RIGHT_ANGLE_OFFSET),
                 new swerveModule(
                         3,SwerveTypeConstants.SDSMK4I_L1(),
                         RobotMap.FRONT_RIGHT_DRIVE_MOTOR_ID,
                         RobotMap.FRONT_RIGHT_ANGLE_MOTOR_ID,
                         RobotMap.FRONT_RIGHT_CANCODER_MOTOR_ID,
-                        Constants.FRONT_RIGHT_ANGLE_OFFSET),
+                        FRONT_RIGHT_ANGLE_OFFSET),
         };
         Timer.delay(0.5);
         AutoBuilder.configureHolonomic(
@@ -79,7 +79,7 @@ public class SwerveSubSystem extends SubsystemBase {
 
         resetModulesToAbsolute();
 
-        swerveDriveKinematics = Constants.SwerveDriveKinematics;
+        swerveDriveKinematics = L2_SwerveDriveKinematics;
         swerveDriveOdometry = new SwerveDriveOdometry(swerveDriveKinematics, getYaw(), getModulePositions());
     }
 
@@ -95,7 +95,7 @@ public class SwerveSubSystem extends SubsystemBase {
                                 translation.getX(),
                                 translation.getY(),
                                 rotation));
-        SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates,Constants.SWERVE_MAX_SPEED);
+        L2_SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates,SWERVE_MAX_SPEED);
         for (swerveModule module : swerveModules){
             module.setDesireState(swerveModuleStates[module.moduleNumber]);
         }
@@ -122,7 +122,7 @@ public class SwerveSubSystem extends SubsystemBase {
 
     public void setModuleStates(SwerveModuleState[] swerveModuleStates){
 
-        SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, Constants.SWERVE_MAX_SPEED);
+        L2_SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, SWERVE_MAX_SPEED);
         for (swerveModule module : swerveModules){
 
             module.setDesireState(swerveModuleStates[module.moduleNumber]);
@@ -165,7 +165,6 @@ public class SwerveSubSystem extends SubsystemBase {
         }
 
          */
-        
         // TODO : Tuning Completed.
         SmartDashboard.putNumber("Rotation",navX.getYaw());
     }

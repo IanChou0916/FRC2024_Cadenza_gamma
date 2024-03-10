@@ -14,9 +14,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.*;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.ArmCommands;
-import frc.robot.commands.ArmTestCommands;
 import frc.robot.commands.CollectShootCommands;
-import frc.robot.commands.HangSubSystem;
+import frc.robot.subsystems.HangSubSystem;
 import frc.robot.commands.drive.SwerveDriveCommand;
 import frc.robot.subsystems.*;
 
@@ -38,7 +37,6 @@ public class RobotContainer {
 
     field = new Field2d();  // This is the field that will be displayed on the SmartDashboard
     SmartDashboard.putData("Field", field);
-
     swerveSubSystem.setDefaultCommand(new SwerveDriveCommand(
       swerveSubSystem,
         () -> driveController.getRawAxis(XboxController.Axis.kLeftY.value),
@@ -47,26 +45,20 @@ public class RobotContainer {
         driveController::getPOV,
         driveController::getLeftBumper,
         driveController::getAButton));
+        
 
       collectSubSystem.setDefaultCommand(new CollectShootCommands(
         collectSubSystem,
         shootSubSystem,
         operatorController::getPOV
         ));
-      /*
       armSubSystem.setDefaultCommand(new ArmCommands(
-              armSubSystem,operatorController::getLeftY,
-              operatorController::getRightY
-        ));
-
-       */
-    armSubSystem.setDefaultCommand(new ArmTestCommands(
             armSubSystem,
-            operatorController::getYButton,
+            operatorController::getBButton,
             operatorController::getAButton,
             operatorController::getLeftBumper,
             operatorController::getRightBumper
-    ));
+        ));
         
     autoChooser = AutoBuilder.buildAutoChooser();
     NamedCommands.registerCommand("TestCommand",new PrintCommand("Hello World!"));
