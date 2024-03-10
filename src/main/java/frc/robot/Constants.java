@@ -106,8 +106,6 @@ public class Constants {
     }
     public static final class ShootConstants{
 
-
-
         public static final double SHOOT_GEAR_RATIO = 2.0;
         public final static double[] SHOOT_PID = {0.003, 0.0, 0.0005,0.225};// TO DO : Using Tuner.
         public static final boolean SHOOT_INVERTED = true;
@@ -121,17 +119,20 @@ public class Constants {
 
     public static final class ArmConstants{
         public static final double[] ARM_PID = {0.09307, 0.0, 0.0509011};
-        public static final double[] WRIST_PID = {0.90912, 0, 0.01753,0.0};// TO DO : Using Tuner.
-        public static final double ARM_KG = 0.64071;
-        public static final double ARM_KS = 0.10542;
-        public static final double ARM_KV = 0.092035;
-        public static final double ARM_KA = 0.0023627;
+        public static final double[] WRIST_PID = {0.051312, 0, 0.001753,0.0};// TO DO : Using Tuner.
+        public static final double ARM_KG = 0.64071/MAX_VOLTAGE;
+        public static final double ARM_KS = 0.10542/MAX_VOLTAGE;
+        public static final double ARM_KV = 0.092035/MAX_VOLTAGE;
+        public static final double ARM_KA = 0.0023627/MAX_VOLTAGE;
 
 
-        public static final double WRIST_KG = 0.12883;
-        public static final double WRIST_KV = 0.05521;
-        public static final double WRIST_KA = 0.0012087;
-        public static final double WRIST_KS = 0.10925;
+        public static final double WRIST_KG = 0.12883/MAX_VOLTAGE;
+        public static final double WRIST_KV = 0.05521/MAX_VOLTAGE;
+        public static final double WRIST_KA = 0.0012087/MAX_VOLTAGE;
+        public static final double WRIST_KS = 0.10925/MAX_VOLTAGE;
+
+        public static final int ARM_CURRENT_LIMIT = 40;
+        public static final int WRIST_CURRENT_LIMIT = 40;
 
         public static final double ARM_GEAR_RATIO = 0.004; // 1/250.0
         public static final double WRIST_GEAR_RATIO =1.0/187.5;
@@ -139,17 +140,17 @@ public class Constants {
         public static final float ARM_REVERSE_LIMIT = 0f;
         public static final float WRIST_FORWARD_LIMIT = 160f;
         public static final float WRIST_REVERSE_LIMIT = 0f;
-        public static final boolean ARM_LEFT_INVERTED = true ;
+        public static final boolean ARM_LEFT_INVERTED = true;
         public static final boolean ARM_RIGHT_INVERTED = false;
         public static final boolean WRIST_INVERTED = true;
-        public static final boolean ARM_ENCODER_INVERTED = true;
+        public static final boolean ARM_ENCODER_INVERTED = false;
         public static final boolean WRIST_ENCODER_INVERTED = false;
 
         public static final double ARM_CONTROL_WAITTIME = 0.1;
         public static final double WRIST_CONTROL_WAITTIME = 0.1;
 
         public static final float ARM_CONTROL_VALUE = 1.0f;
-        public static final float WRIST_CONTROL_VALUE = 0.5f;
+        public static final float WRIST_CONTROL_VALUE = 1.0f;
 
         public enum ARM_POSITIONS {
             // TODO : Source,FORWARD_SPEAKER Position TBD to use.

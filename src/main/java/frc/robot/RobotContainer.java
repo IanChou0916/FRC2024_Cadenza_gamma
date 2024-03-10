@@ -62,7 +62,7 @@ public class RobotContainer {
        */
     armSubSystem.setDefaultCommand(new ArmTestCommands(
             armSubSystem,
-            operatorController::getYButton,
+            operatorController::getBButton,
             operatorController::getAButton,
             operatorController::getLeftBumper,
             operatorController::getRightBumper
