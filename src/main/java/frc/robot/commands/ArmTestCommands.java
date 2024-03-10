@@ -73,8 +73,8 @@ public class ArmTestCommands extends Command {
                 timer.restart();
             }
         }
-        armSubSystem.setArmPosition(armAngle);
-        armSubSystem.setWristPosition(wristAngle);
+        armSubSystem.setArmAngle(armAngle);
+        armSubSystem.setWristAngle(wristAngle);
         SmartDashboard.putNumber("armAngle",armAngle);
         SmartDashboard.putNumber("wristAngle",wristAngle);
         SmartDashboard.putNumber("time",timer.get());
