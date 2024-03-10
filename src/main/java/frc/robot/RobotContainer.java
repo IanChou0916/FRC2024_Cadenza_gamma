@@ -24,8 +24,6 @@ import frc.robot.subsystems.*;
 public class RobotContainer {
   private final XboxController driveController = new XboxController(0);
   private final XboxController operatorController = new XboxController(1);
-  // until the operator controller is defined.
-  //private final XboxController operatorController = new XboxController(1);
   private final SwerveSubSystem swerveSubSystem = new SwerveSubSystem();
   private final CollectSubSystem collectSubSystem = new CollectSubSystem();
   private final ShootSubSystem shootSubSystem = new ShootSubSystem();

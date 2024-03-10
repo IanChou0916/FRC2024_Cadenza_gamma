@@ -57,10 +57,10 @@ public class Constants {
     public static final double SWERVE_DRIVE_PEAK_CURRENT_DURATION = 0.1;
     public static final boolean SWERVE_DRIVE_CURRENT_ENABLED = true;
 
-    public static final double SWERVE_DRIVE_PID[] = {0.05, 0.0, 0.0}; // TO DO : Using Tuner.
-    public static final double SWERVE_DRIVE_KS = (0.32/MAX_VOLTAGE);
-    public static final double SWERVE_DRIVE_KV = (1.51/MAX_VOLTAGE);
-    public static final double SWERVE_DRIVE_KA = (0.27/MAX_VOLTAGE);
+    public static final double[] SWERVE_DRIVE_PID = {0.05, 0.0, 0.0}; // TO DO : Using Tuner.
+    public static final double SWERVE_DRIVE_KS = (0.0/MAX_VOLTAGE);
+    public static final double SWERVE_DRIVE_KV = (2.3092/MAX_VOLTAGE);
+    public static final double SWERVE_DRIVE_KA = (1.2331/MAX_VOLTAGE);
 
 
 
@@ -120,17 +120,18 @@ public class Constants {
 
 
     public static final class ArmConstants{
-        public static final double[] ARM_PID = {0.001, 0.0, 0.0,0.0};
-        public static final double[] WRIST_PID = {0.001, 0.0, 0.0,0.0};// TO DO : Using Tuner.
-        public static final double ARM_KG = 0.28;
-        public static final double ARM_KV = 0.09;
-        public static final double ARM_KA = 0;
-        public static final double ARM_KS = 0.0;
+        public static final double[] ARM_PID = {0.09307, 0.0, 0.0509011};
+        public static final double[] WRIST_PID = {0.90912, 0, 0.01753,0.0};// TO DO : Using Tuner.
+        public static final double ARM_KG = 0.64071;
+        public static final double ARM_KS = 0.10542;
+        public static final double ARM_KV = 0.092035;
+        public static final double ARM_KA = 0.0023627;
 
-        public static final double WRIST_KG = 0.31;
-        public static final double WRIST_KV = 0.06;
-        public static final double WRIST_KA = 0;
-        public static final double WRIST_KS = 0.0;
+
+        public static final double WRIST_KG = 0.12883;
+        public static final double WRIST_KV = 0.05521;
+        public static final double WRIST_KA = 0.0012087;
+        public static final double WRIST_KS = 0.10925;
 
         public static final double ARM_GEAR_RATIO = 0.004; // 1/250.0
         public static final double WRIST_GEAR_RATIO =1.0/187.5;
