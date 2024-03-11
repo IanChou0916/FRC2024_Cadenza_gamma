@@ -23,8 +23,6 @@ public class ArmSubSystem extends SubsystemBase {
     private AbsoluteEncoder mArmAbsoluteEncoder;
     private ArmFeedforward armFeedForward = new ArmFeedforward(ARM_KS,ARM_KG,ARM_KV,ARM_KA);
     private ArmFeedforward wristFeedForward = new ArmFeedforward(WRIST_KS,WRIST_KG,WRIST_KV,WRIST_KA);
-    private double armValue = 0;
-    private double wristValue = 0;
 
     public ArmSubSystem(){
         mLeftArmMotor = new CANSparkMax(ARM_LEFT_MOTOR_ID, MotorType.kBrushless);
@@ -103,17 +101,28 @@ public class ArmSubSystem extends SubsystemBase {
         mLeftArmMotor.getEncoder().setPosition(mArmAbsoluteEncoder.getPosition());
         mRightArmMotor.getEncoder().setPosition(mArmAbsoluteEncoder.getPosition());
         mWristMotor.getEncoder().setPosition(mWristAbsoulteEncoder.getPosition());
-        armValue = mArmAbsoluteEncoder.getPosition();
-        wristValue = mWristAbsoulteEncoder.getPosition();
 
     }
     public void setArmPosition(double degrees) {
-        mLeftArmMotor.getPIDController().setReference(degrees, CANSparkBase.ControlType.kPosition, 0, armFeedForward.calculate(degrees, 0));
-        mRightArmMotor.getPIDController().setReference(degrees, CANSparkBase.ControlType.kPosition,0,armFeedForward.calculate(degrees,0));
+        mLeftArmMotor.getPIDController().setReference(degrees, CANSparkMax.ControlType.kPosition, 0, armFeedForward.calculate(degrees, 0));
+        mRightArmMotor.getPIDController().setReference(degrees, CANSparkMax.ControlType.kPosition,0,armFeedForward.calculate(degrees,0));
     }
+    public void setArmPosition(ARM_POSITIONS position) {
+        mLeftArmMotor.getPIDController().setReference(position.getArmPosition(),
+                CANSparkMax.ControlType.kPosition, 0,
+                armFeedForward.calculate(position.getArmPosition(), 0));
+        mRightArmMotor.getPIDController().setReference(position.getArmPosition(),
+                CANSparkMax.ControlType.kPosition,0,
+                armFeedForward.calculate(position.getArmPosition(), 0));
+    }
+
     public void setWristPosition(double degrees){
         double groundDegrees = degrees+mArmAbsoluteEncoder.getPosition()-90;
         mWristMotor.getPIDController().setReference(degrees,CANSparkFlex.ControlType.kPosition,0,wristFeedForward.calculate(groundDegrees,0));
+    }
+    public void setWristPosition(ARM_POSITIONS position){
+        double groundDegrees = position.getWristPosition()+mArmAbsoluteEncoder.getPosition()-90;
+        mWristMotor.getPIDController().setReference(position.getWristPosition(), CANSparkFlex.ControlType.kPosition,0,wristFeedForward.calculate(groundDegrees,0));
     }
 
 

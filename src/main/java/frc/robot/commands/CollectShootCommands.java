@@ -42,7 +42,7 @@ public class CollectShootCommands extends Command {
                 collectSubSystem.shootAMP();
                 break;
             case 270:
-                shootSubSystem.setSpeed(40);
+                shootSubSystem.shootNote();
                 break;
         }
     }

@@ -37,6 +37,13 @@ public class HangSubSystem extends SubsystemBase {
         motor.setInverted(inversion);
         motor.burnFlash();
     }
+    public void setLeftHangMotor(double velocity){
+        mHangLeftMotor.getPIDController().setReference(velocity, CANSparkBase.ControlType.kVelocity);
+    }
+    public void setRightHangMotor(double velocity){
+        mHangRightMotor.getPIDController().setReference(velocity, CANSparkBase.ControlType.kVelocity);
+    }
+
 
     public void setLeftHangMotor() {
         mHangLeftMotor.getPIDController().setReference(0.5, CANSparkBase.ControlType.kVelocity);
@@ -58,6 +65,10 @@ public class HangSubSystem extends SubsystemBase {
     }
     public void reverseRightHangMotor(){
         mHangRightMotor.getPIDController().setReference(-0.5, CANSparkBase.ControlType.kVelocity);
+    }
+    public void stopHangMotor(){
+        mHangLeftMotor.set(0);
+        mHangRightMotor.set(0);
     }
 
     @Override

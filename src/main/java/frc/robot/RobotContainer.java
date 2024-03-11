@@ -15,9 +15,13 @@ import edu.wpi.first.wpilibj2.command.*;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.ArmCommands;
 import frc.robot.commands.CollectShootCommands;
+import frc.robot.commands.HangCommands;
+import frc.robot.commands.position.PositionManager;
 import frc.robot.subsystems.HangSubSystem;
 import frc.robot.commands.drive.SwerveDriveCommand;
 import frc.robot.subsystems.*;
+
+import static frc.robot.Constants.ArmConstants.ARM_POSITIONS.SPEAKER;
 
 
 public class RobotContainer {
@@ -28,7 +32,8 @@ public class RobotContainer {
   private final ShootSubSystem shootSubSystem = new ShootSubSystem();
   private final ArmSubSystem armSubSystem = new ArmSubSystem();
   private final HangSubSystem hangSubSystem = new HangSubSystem();
-
+  private PositionManager positionManager = new PositionManager(armSubSystem,collectSubSystem,operatorController,SPEAKER);
+  private Command PositionCommand = new SequentialCommandGroup();
 
   private final Field2d field;
   private final SendableChooser <Command> autoChooser;
@@ -52,6 +57,7 @@ public class RobotContainer {
         shootSubSystem,
         operatorController::getPOV
         ));
+      /*
       armSubSystem.setDefaultCommand(new ArmCommands(
             armSubSystem,
             operatorController::getBButton,
@@ -59,6 +65,16 @@ public class RobotContainer {
             operatorController::getLeftBumper,
             operatorController::getRightBumper
         ));
+
+       */
+
+      hangSubSystem.setDefaultCommand(new HangCommands(
+              hangSubSystem,
+              driveController::getXButton,
+              driveController::getBButton,
+              driveController::getStartButton,
+              driveController::getBackButton
+      ));
         
     autoChooser = AutoBuilder.buildAutoChooser();
     NamedCommands.registerCommand("TestCommand",new PrintCommand("Hello World!"));
@@ -75,24 +91,10 @@ public class RobotContainer {
   private void configureBindings() {
     new JoystickButton(driveController, 6) // Right Bumper
            .onTrue(new InstantCommand(swerveSubSystem::zeroGyro));
-
-    new JoystickButton(driveController,XboxController.Button.kX.value)
-            .onTrue(new InstantCommand(hangSubSystem::setLeftHangMotor));
-    new JoystickButton(driveController,XboxController.Button.kY.value)
-            .onTrue(new InstantCommand(()->{
-              hangSubSystem.stopLeftHangMotor();
-              hangSubSystem.stopRightHangMotor();
-            }));
-    new JoystickButton(driveController,XboxController.Button.kB.value)
-            .onTrue(new InstantCommand(hangSubSystem::reverseLeftHangMotor));
-    new JoystickButton(driveController,XboxController.Button.kStart.value)
-            .onTrue(new InstantCommand(hangSubSystem::setRightHangMotor));
-    new JoystickButton(driveController,XboxController.Button.kBack.value)
-            .onTrue(new InstantCommand(hangSubSystem::reverseRightHangMotor));
-
-
-
-
+    new JoystickButton(operatorController,XboxController.Button.kX.value)
+            .onTrue(positionManager.ToAmpPosition());
+    new JoystickButton(operatorController,XboxController.Button.kY.value)
+            .onTrue(positionManager.ToCollectPosition());
 
   }
 

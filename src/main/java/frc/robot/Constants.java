@@ -109,6 +109,7 @@ public class Constants {
 
 
     public static final class ArmConstants{
+        //TODO : set PID DOWN for slot 1
         public static final double[] ARM_PID = {0.09307, 0.0, 0.0509011};
         public static final double[] WRIST_PID = {0.051312, 0, 0.001753,0.0};// TO DO : Using Tuner.
         public static final double ARM_KG = 0.64071/MAX_VOLTAGE;
@@ -138,43 +139,42 @@ public class Constants {
         public static final boolean WRIST_ENCODER_INVERTED = false;
 
         public static final double ARM_CONTROL_WAITTIME = 0.1;
-        public static final double WRIST_CONTROL_WAITTIME = 0.1;
+        public static final double WRIST_CONTROL_WAITTIME = 0.2;
 
         public static final float ARM_CONTROL_VALUE = 1.0f;
-        public static final float WRIST_CONTROL_VALUE = 1.0f;
+        public static final float WRIST_CONTROL_VALUE = 0.4f;
 
         public enum ARM_POSITIONS {
             // TODO : Source,FORWARD_SPEAKER Position TBD to use.
-            AMP(30.55,114.177),
-            SPEAKER(42,28.598),
-            COLLECT(90.1164,128.982188061),
-            SOURCE(4,0),
+            AMP(57.954227,111.052642),
+            SPEAKER(23.179,122.967119),
+            COLLECT(7.6614913,110.2801208),
+            SOURCE(46.36526,158.85238),
             FORWARD_SPEAKER(0,0);
-            private double firstArmPosition;
-            private double secondArmPosition;
-            private ARM_POSITIONS(double firstArmPosition, double secondArmPosition){
-                this.firstArmPosition = firstArmPosition;
-                this.secondArmPosition = secondArmPosition;
+            private double ArmPosition;
+            private double WristPosition;
+            private ARM_POSITIONS(double ArmPosition,double WristPosition){
+                this.ArmPosition = ArmPosition;
+                this.WristPosition = WristPosition;
 
             }
-            public double getFirstArmPosition(){
-                return firstArmPosition;
+            public double getArmPosition(){
+                return ArmPosition;
             }
-            public double getSecondArmPosition(){return secondArmPosition;}
+            public double getWristPosition(){return WristPosition;}
 
         }
     }
 
     public static final class HangConstants{
-        public static final double[] HANG_PID = {0.005, 0.0, 0.0005,0.685   };// TO DO : Using Tuner.
-        public static final double HANG_OPENLOOPRAMP = 0.2;
-        public static final double HANG_CLOSELOOPRAMP = 0.0;
+        public static final double[] HANG_PID = {0.005, 0.0, 0.0005,0.685};// TO DO : Using Tuner.
+
         public static final int HANG_CURRENT_LIMIT = 35;
         public static final CANSparkBase.IdleMode HANG_NEUTRAL_MODE = CANSparkBase.IdleMode.kBrake;
         public static final double HANG_GEAR_RATIO =1.0/64.0;
         public static final boolean HANG_LEFT_INVERTED = false;
         public static final boolean HANG_RIGHT_INVERTED = true;
-        public static final double HANG_SPEED = 2; // Rotates Per Second
+        public static final double HANG_SPEED = 0.5; // Rotates Per Second
     }
 
 
