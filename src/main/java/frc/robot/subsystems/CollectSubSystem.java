@@ -70,7 +70,7 @@ public class CollectSubSystem extends SubsystemBase {
   }
   public void shootAMP(){
     mCollectIntake.getPIDController().setReference(REVERSE_AMP_SPEED, ControlType.kVelocity);
-    //mCollectIntake.getPIDController().setReference(-1,ControlType.kPosition);
+
   }
 
 

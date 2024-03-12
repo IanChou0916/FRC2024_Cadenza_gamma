@@ -2,6 +2,11 @@ package frc.robot.subsystems;
 
 import com.kauailabs.navx.frc.AHRS;
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.commands.FollowPathHolonomic;
+import com.pathplanner.lib.path.PathPlannerPath;
+import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
+import com.pathplanner.lib.util.PIDConstants;
+import com.pathplanner.lib.util.ReplanningConfig;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -14,12 +19,15 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.lib.util.SwerveTypeConstants;
 import frc.robot.Constants;
 import frc.robot.RobotMap;
-import static frc.robot.Constants.SwerveConstants.*;
+
 import static frc.robot.Constants.AutoConstants.SwervePathFollower;
+import static frc.robot.Constants.NAVX_INVERTED;
+import static frc.robot.Constants.SwerveConstants.*;
 
 
 public class SwerveSubSystem extends SubsystemBase {
@@ -59,7 +67,6 @@ public class SwerveSubSystem extends SubsystemBase {
                         RobotMap.FRONT_RIGHT_CANCODER_MOTOR_ID,
                         FRONT_RIGHT_ANGLE_OFFSET),
         };
-        Timer.delay(0.5);
         AutoBuilder.configureHolonomic(
                 this::getPose,
                 this::resetOdometry,
@@ -75,11 +82,13 @@ public class SwerveSubSystem extends SubsystemBase {
                 },
                 this
         );
-        
+
+        Timer.delay(0.5);
+        zeroGyro();
 
         resetModulesToAbsolute();
 
-        swerveDriveKinematics = L2_SwerveDriveKinematics;
+        //swerveDriveKinematics = L2_SwerveDriveKinematics;
         swerveDriveOdometry = new SwerveDriveOdometry(swerveDriveKinematics, getYaw(), getModulePositions());
     }
 
@@ -139,7 +148,10 @@ public class SwerveSubSystem extends SubsystemBase {
     }
 
     public Rotation2d getYaw(){
-        return (Constants.NAVX_INVERTED) ? Rotation2d.fromDegrees(360 - navX.getYaw()) : Rotation2d.fromDegrees(navX.getYaw());
+        return (NAVX_INVERTED) ? Rotation2d.fromDegrees(360 - navX.getYaw()) : Rotation2d.fromDegrees(navX.getYaw());
+    }
+    public void setGyroAngle(double angle){
+        navX.setAngleAdjustment(angle);
     }
     public void resetModulesToAbsolute(){
         for(swerveModule module : swerveModules){
@@ -154,9 +166,11 @@ public class SwerveSubSystem extends SubsystemBase {
             swerveModule.stop();
         }
     }
+
+
     @Override
     public void periodic() {
-        /*
+
         swerveDriveOdometry.update(getYaw(), getModulePositions());
         for(swerveModule module : swerveModules){
             SmartDashboard.putNumber("Mod " + module.moduleNumber + " CanCoder",module.getCanCoder().getDegrees());
@@ -164,7 +178,9 @@ public class SwerveSubSystem extends SubsystemBase {
             SmartDashboard.putNumber("Mod " + module.moduleNumber + " Velocity", module.getState().speedMetersPerSecond);
         }
 
-         */
+
+
+
         // TODO : Tuning Completed.
         SmartDashboard.putNumber("Rotation",navX.getYaw());
     }

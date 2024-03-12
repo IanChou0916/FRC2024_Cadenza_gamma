@@ -37,9 +37,9 @@ public class ArmSubSystem extends SubsystemBase {
         mArmAbsoluteEncoder.setInverted(ARM_ENCODER_INVERTED);
         configArmMotor(mRightArmMotor,ARM_LEFT_INVERTED);
         configArmMotor(mLeftArmMotor,ARM_RIGHT_INVERTED);
-        Timer.delay(0.4);
+        Timer.delay(0.5);
         syncAbsoluteEncoder();
-        resetToAMP();
+        //resetToAMP();
     }
 
     private void configArmMotor(CANSparkMax armMotor,boolean inversion){
@@ -55,13 +55,14 @@ public class ArmSubSystem extends SubsystemBase {
         armMotor.getPIDController().setP(ARM_UP_PID[0], ARM_UP_SLOT);
         armMotor.getPIDController().setI(ARM_UP_PID[1], ARM_UP_SLOT);
         armMotor.getPIDController().setD(ARM_UP_PID[2], ARM_UP_SLOT);
+
         armMotor.getPIDController().setP(ARM_DOWN_PID[0],ARM_DOWN_SLOT);
         armMotor.getPIDController().setI(ARM_DOWN_PID[1],ARM_DOWN_SLOT);
         armMotor.getPIDController().setD(ARM_DOWN_PID[2],ARM_DOWN_SLOT);
 
 
-        
         armMotor.setSmartCurrentLimit(ARM_CURRENT_LIMIT);
+
 
         armMotor.setInverted(inversion);
 
@@ -85,7 +86,7 @@ public class ArmSubSystem extends SubsystemBase {
         
         mWristMotor.getEncoder().setPositionConversionFactor(360*WRIST_GEAR_RATIO);
         mWristAbsoulteEncoder.setPositionConversionFactor(360);
-        mWristAbsoulteEncoder.setZeroOffset(331.8981314);
+        mWristAbsoulteEncoder.setZeroOffset(330.45481314);
         
         mWristMotor.getPIDController().setP(WRIST_PID[0], 0);
         mWristMotor.getPIDController().setI(WRIST_PID[1], 0);
