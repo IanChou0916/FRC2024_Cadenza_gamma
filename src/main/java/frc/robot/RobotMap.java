@@ -34,6 +34,10 @@ public class RobotMap {
         public final static int WRIST_MOTOR_ID = 3; // Flex
 
     }
+    public static final class HangMap{
+        public static final int HANG_LEFT_MOTOR = 5;
+        public static final int HANG_RIGHT_MOTOR = 6;
+    }
     public static final class Vision{
         public final static String LIMELIGHT_CENTER_NAME = "limelight";
     }

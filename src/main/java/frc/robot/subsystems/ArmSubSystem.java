@@ -9,10 +9,11 @@ import com.revrobotics.SparkAbsoluteEncoder.Type;
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.lib.convert.Conversions;
 
 import static frc.robot.Constants.ArmConstants.*;
+import static frc.robot.Constants.ArmConstants.ARM_POSITIONS.AMP;
 import static frc.robot.RobotMap.ArmMap.*;
 
 public class ArmSubSystem extends SubsystemBase {
@@ -36,9 +37,9 @@ public class ArmSubSystem extends SubsystemBase {
         mArmAbsoluteEncoder.setInverted(ARM_ENCODER_INVERTED);
         configArmMotor(mRightArmMotor,ARM_LEFT_INVERTED);
         configArmMotor(mLeftArmMotor,ARM_RIGHT_INVERTED);
-
-        Timer.delay(0.5);
+        Timer.delay(0.4);
         syncAbsoluteEncoder();
+        resetToAMP();
     }
 
     private void configArmMotor(CANSparkMax armMotor,boolean inversion){
@@ -46,21 +47,31 @@ public class ArmSubSystem extends SubsystemBase {
         armMotor.clearFaults();
         
         armMotor.getEncoder().setPositionConversionFactor(360*ARM_GEAR_RATIO);
+
         mArmAbsoluteEncoder.setZeroOffset(71.9845427);
         mArmAbsoluteEncoder.setPositionConversionFactor(360);
         mArmAbsoluteEncoder.setInverted(ARM_ENCODER_INVERTED);
         
-        armMotor.getPIDController().setP(ARM_PID[0], 0);
-        armMotor.getPIDController().setI(ARM_PID[1], 0);
-        armMotor.getPIDController().setD(ARM_PID[2], 0);
-        //mRightArMotor.getPIDController().setFF(, 0);
+        armMotor.getPIDController().setP(ARM_UP_PID[0], ARM_UP_SLOT);
+        armMotor.getPIDController().setI(ARM_UP_PID[1], ARM_UP_SLOT);
+        armMotor.getPIDController().setD(ARM_UP_PID[2], ARM_UP_SLOT);
+        armMotor.getPIDController().setP(ARM_DOWN_PID[0],ARM_DOWN_SLOT);
+        armMotor.getPIDController().setI(ARM_DOWN_PID[1],ARM_DOWN_SLOT);
+        armMotor.getPIDController().setD(ARM_DOWN_PID[2],ARM_DOWN_SLOT);
+
+
         
         armMotor.setSmartCurrentLimit(ARM_CURRENT_LIMIT);
-        //mRightArmMotor.setSoftLimit(SoftLimitDirection.kForward, ARM_FORWARD_LIMIT);
-        //mRightArmMotor.setSoftLimit(SoftLimitDirection.kReverse, ARM_REVERSE_LIMIT);
+
+        armMotor.setInverted(inversion);
+
+        armMotor.setSoftLimit(SoftLimitDirection.kForward, ARM_FORWARD_LIMIT);
+        armMotor.setSoftLimit(SoftLimitDirection.kReverse, ARM_REVERSE_LIMIT);
+        armMotor.enableSoftLimit(SoftLimitDirection.kForward,true);
+        armMotor.enableSoftLimit(SoftLimitDirection.kReverse,true);
 
         armMotor.setIdleMode(IdleMode.kBrake);
-        armMotor.setInverted(inversion);
+
 
         armMotor.burnFlash();
 
@@ -79,7 +90,7 @@ public class ArmSubSystem extends SubsystemBase {
         mWristMotor.getPIDController().setP(WRIST_PID[0], 0);
         mWristMotor.getPIDController().setI(WRIST_PID[1], 0);
         mWristMotor.getPIDController().setD(WRIST_PID[2], 0);
-        //mWristMotor.getPIDController().setFF(WRIST_PID[3], 0);
+
         
         mWristMotor.setSmartCurrentLimit(WRIST_CURRENT_LIMIT);
         mWristMotor.setSoftLimit(SoftLimitDirection.kForward, WRIST_FORWARD_LIMIT);
@@ -88,7 +99,7 @@ public class ArmSubSystem extends SubsystemBase {
         mWristMotor.enableSoftLimit(SoftLimitDirection.kReverse,true);
 
         mWristMotor.setIdleMode(IdleMode.kBrake);
-        //mWristMotor.getEncoder().setInverted(true);
+
         mWristAbsoulteEncoder.setInverted(WRIST_ENCODER_INVERTED);
 
         mWristMotor.setInverted(WRIST_INVERTED); // wrist motor
@@ -104,18 +115,38 @@ public class ArmSubSystem extends SubsystemBase {
 
     }
     public void setArmPosition(double degrees) {
-        mLeftArmMotor.getPIDController().setReference(degrees, CANSparkMax.ControlType.kPosition, 0, armFeedForward.calculate(degrees, 0));
-        mRightArmMotor.getPIDController().setReference(degrees, CANSparkMax.ControlType.kPosition,0,armFeedForward.calculate(degrees,0));
+        if(getArmAngle() > degrees){ // To the floor, Arm down
+            mLeftArmMotor.getPIDController().setReference(degrees, CANSparkMax.ControlType.kPosition,
+                    ARM_DOWN_SLOT, armFeedForward.calculate(degrees, 0));
+            mRightArmMotor.getPIDController().setReference(degrees, CANSparkMax.ControlType.kPosition,
+                    ARM_DOWN_SLOT, armFeedForward.calculate(degrees,0));
+        }
+        else { // To the top, Arm up.
+            mLeftArmMotor.getPIDController().setReference(degrees, CANSparkMax.ControlType.kPosition,
+                    ARM_UP_SLOT, armFeedForward.calculate(degrees, 0));
+            mRightArmMotor.getPIDController().setReference(degrees, CANSparkMax.ControlType.kPosition,
+                    ARM_UP_SLOT, armFeedForward.calculate(degrees, 0));
+        }
+
     }
     public void setArmPosition(ARM_POSITIONS position) {
-        mLeftArmMotor.getPIDController().setReference(position.getArmPosition(),
-                CANSparkMax.ControlType.kPosition, 0,
-                armFeedForward.calculate(position.getArmPosition(), 0));
-        mRightArmMotor.getPIDController().setReference(position.getArmPosition(),
-                CANSparkMax.ControlType.kPosition,0,
-                armFeedForward.calculate(position.getArmPosition(), 0));
+        if(getArmAngle() > position.getArmPosition()){ // To the floor, Arm down
+            mLeftArmMotor.getPIDController().setReference(position.getArmPosition(),
+                    CANSparkMax.ControlType.kPosition, ARM_DOWN_SLOT,
+                    armFeedForward.calculate(position.getArmPosition(), 0));
+            mRightArmMotor.getPIDController().setReference(position.getArmPosition(),
+                    CANSparkMax.ControlType.kPosition,ARM_DOWN_SLOT,
+                    armFeedForward.calculate(position.getArmPosition(), 0));
+        }
+        else { // To the top, Arm up.
+            mLeftArmMotor.getPIDController().setReference(position.getArmPosition(),
+                    CANSparkMax.ControlType.kPosition, ARM_UP_SLOT,
+                    armFeedForward.calculate(position.getArmPosition(), 0));
+            mRightArmMotor.getPIDController().setReference(position.getArmPosition(),
+                    CANSparkMax.ControlType.kPosition,ARM_UP_SLOT,
+                    armFeedForward.calculate(position.getArmPosition(), 0));
+        }
     }
-
     public void setWristPosition(double degrees){
         double groundDegrees = degrees+mArmAbsoluteEncoder.getPosition()-90;
         mWristMotor.getPIDController().setReference(degrees,CANSparkFlex.ControlType.kPosition,0,wristFeedForward.calculate(groundDegrees,0));
@@ -131,6 +162,20 @@ public class ArmSubSystem extends SubsystemBase {
     }
     public double getWristAngle(){
         return mWristAbsoulteEncoder.getPosition();
+    }
+
+    private void resetToAMP(){
+        if(getArmAngle() > 50){
+            setWristPosition(AMP);
+            if(Math.abs(AMP.getWristPosition() - getWristAngle()) < 15){
+                setArmPosition(AMP);
+            }
+        }
+        else {
+            setArmPosition(AMP);
+            setWristPosition(AMP);
+        }
+
     }
 
 

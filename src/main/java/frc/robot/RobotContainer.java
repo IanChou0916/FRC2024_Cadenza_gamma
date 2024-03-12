@@ -16,7 +16,6 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.ArmCommands;
 import frc.robot.commands.CollectShootCommands;
 import frc.robot.commands.HangCommands;
-import frc.robot.commands.position.PositionManager;
 import frc.robot.subsystems.HangSubSystem;
 import frc.robot.commands.drive.SwerveDriveCommand;
 import frc.robot.subsystems.*;
@@ -33,7 +32,6 @@ public class RobotContainer {
   private final ArmSubSystem armSubSystem = new ArmSubSystem();
   private final HangSubSystem hangSubSystem = new HangSubSystem();
   private PositionManager positionManager = new PositionManager(armSubSystem,collectSubSystem,operatorController,SPEAKER);
-  private Command PositionCommand = new SequentialCommandGroup();
 
   private final Field2d field;
   private final SendableChooser <Command> autoChooser;
@@ -57,16 +55,16 @@ public class RobotContainer {
         shootSubSystem,
         operatorController::getPOV
         ));
-      /*
+
       armSubSystem.setDefaultCommand(new ArmCommands(
             armSubSystem,
-            operatorController::getBButton,
-            operatorController::getAButton,
+            operatorController::getStartButton,
+            operatorController::getBackButton,
             operatorController::getLeftBumper,
             operatorController::getRightBumper
         ));
 
-       */
+
 
       hangSubSystem.setDefaultCommand(new HangCommands(
               hangSubSystem,
@@ -92,10 +90,11 @@ public class RobotContainer {
     new JoystickButton(driveController, 6) // Right Bumper
            .onTrue(new InstantCommand(swerveSubSystem::zeroGyro));
     new JoystickButton(operatorController,XboxController.Button.kX.value)
-            .onTrue(positionManager.ToAmpPosition());
-    new JoystickButton(operatorController,XboxController.Button.kY.value)
-            .onTrue(positionManager.ToCollectPosition());
-
+            .onTrue(positionManager.TargetAmpPosition());
+    new JoystickButton(operatorController,XboxController.Button.kA.value)
+            .onTrue(positionManager.TargetCollectPosition());
+    new JoystickButton(operatorController,XboxController.Button.kB.value)
+            .onTrue(positionManager.TargetSpeakerPosition());
   }
 
   public Command getAutonomousCommand() {

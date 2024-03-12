@@ -7,23 +7,22 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import static frc.robot.Constants.HangConstants.*;
+import static frc.robot.RobotMap.HangMap.*;
 
 public class HangSubSystem extends SubsystemBase {
-    private CANSparkMax mHangLeftMotor;
-    private CANSparkMax mHangRightMotor;
+    private CANSparkMax mHangLeftMotor = new CANSparkMax(HANG_LEFT_MOTOR, CANSparkLowLevel.MotorType.kBrushless);
+    private CANSparkMax mHangRightMotor = new CANSparkMax(HANG_RIGHT_MOTOR, CANSparkLowLevel.MotorType.kBrushless);
 
     public HangSubSystem(){
-        mHangLeftMotor = new CANSparkMax(5, CANSparkLowLevel.MotorType.kBrushless);
-        mHangRightMotor = new CANSparkMax(6, CANSparkLowLevel.MotorType.kBrushless);
-        configHang(mHangLeftMotor,true);
-        configHang(mHangRightMotor,false);
+        configHang(mHangLeftMotor,HANG_LEFT_INVERTED);
+        configHang(mHangRightMotor,HANG_RIGHT_INVERTED);
     }
 
     private void configHang(CANSparkMax motor, boolean inversion){
         motor.restoreFactoryDefaults();
 
         motor.getEncoder().setPositionConversionFactor(HANG_GEAR_RATIO);
-        motor.getEncoder().setVelocityConversionFactor(HANG_GEAR_RATIO / 60.0);
+        motor.getEncoder().setVelocityConversionFactor(HANG_GEAR_RATIO / 60.0); // RPS
 
         motor.getPIDController().setP(HANG_PID[0], 0);
         motor.getPIDController().setI(HANG_PID[1], 0);
@@ -36,6 +35,8 @@ public class HangSubSystem extends SubsystemBase {
 
         motor.setInverted(inversion);
         motor.burnFlash();
+        motor.getEncoder().setPosition(0);
+        stopHangMotor(); // To ensure Hang Motor is stopped.
     }
     public void setLeftHangMotor(double velocity){
         mHangLeftMotor.getPIDController().setReference(velocity, CANSparkBase.ControlType.kVelocity);
@@ -44,28 +45,6 @@ public class HangSubSystem extends SubsystemBase {
         mHangRightMotor.getPIDController().setReference(velocity, CANSparkBase.ControlType.kVelocity);
     }
 
-
-    public void setLeftHangMotor() {
-        mHangLeftMotor.getPIDController().setReference(0.5, CANSparkBase.ControlType.kVelocity);
-    }
-    public void stopLeftHangMotor(){
-        mHangLeftMotor.getPIDController().setReference(0, CANSparkBase.ControlType.kVelocity);
-
-    }
-    public void reverseLeftHangMotor(){
-        mHangLeftMotor.getPIDController().setReference(-0.5, CANSparkBase.ControlType.kVelocity);
-
-    }
-    public void setRightHangMotor(){
-        mHangRightMotor.getPIDController().setReference(0.5, CANSparkBase.ControlType.kVelocity);
-    }
-    public void stopRightHangMotor(){
-
-        mHangRightMotor.getPIDController().setReference(0, CANSparkBase.ControlType.kVelocity);
-    }
-    public void reverseRightHangMotor(){
-        mHangRightMotor.getPIDController().setReference(-0.5, CANSparkBase.ControlType.kVelocity);
-    }
     public void stopHangMotor(){
         mHangLeftMotor.set(0);
         mHangRightMotor.set(0);

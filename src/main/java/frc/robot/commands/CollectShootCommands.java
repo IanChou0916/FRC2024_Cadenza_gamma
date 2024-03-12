@@ -7,9 +7,9 @@ import frc.robot.subsystems.ShootSubSystem;
 import java.util.function.IntSupplier;
 
 public class CollectShootCommands extends Command {
-    private IntSupplier collectSupplier;
-    private CollectSubSystem collectSubSystem;
-    private ShootSubSystem shootSubSystem;
+    private final IntSupplier collectSupplier;
+    private final CollectSubSystem collectSubSystem;
+    private final ShootSubSystem shootSubSystem;
 
     public CollectShootCommands(
             CollectSubSystem collectSubSystem,
@@ -30,8 +30,9 @@ public class CollectShootCommands extends Command {
     public void execute(){
         switch(collectSupplier.getAsInt()){
             case 0:
+                // TODO : added LED subSystem to notify drivers.
                 collectSubSystem.collectNote();
-                //shootSubSystem.setSpeed(-3);
+
                 break;
             case 90:
                 collectSubSystem.stopCollect();

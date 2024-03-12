@@ -81,6 +81,7 @@ public class ArmCommands extends Command {
         armSubSystem.setWristPosition(wristAngle);
         SmartDashboard.putNumber("armAngle",armAngle);
         SmartDashboard.putNumber("wristAngle",wristAngle);
+
         //SmartDashboard.putNumber("time",timer.get());
     }
     private void setArmAngle(double angle){
