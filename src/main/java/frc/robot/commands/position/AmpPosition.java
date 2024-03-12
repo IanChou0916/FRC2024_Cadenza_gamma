@@ -21,21 +21,30 @@ public class AmpPosition extends SequentialCommandGroup {
 
         switch (presentPosition) {
             case AMP -> addCommands(
-                    noticeAmpComplete()
+                    new InstantCommand(() -> operatorController.setRumble(GenericHID.RumbleType.kLeftRumble, 0.5)),
+                    new WaitCommand(0.4),
+                    new InstantCommand(() -> operatorController.setRumble(GenericHID.RumbleType.kLeftRumble, 0)),
+                    new PrintCommand("AMP Position Complete")
             );
             case SPEAKER -> addCommands(
                     new InstantCommand(() -> armSubSystem.setArmPosition(AMP)),
                     new WaitUntilCommand(() -> (AMP.getArmPosition() - armSubSystem.getArmAngle() < 10)),
                     new InstantCommand(() -> armSubSystem.setWristPosition(AMP)),
                     new WaitUntilCommand(() -> AMP.getWristPosition() - armSubSystem.getWristAngle() < 4),
-                    noticeAmpComplete()
+                    new InstantCommand(() -> operatorController.setRumble(GenericHID.RumbleType.kLeftRumble, 0.5)),
+                    new WaitCommand(0.4),
+                    new InstantCommand(() -> operatorController.setRumble(GenericHID.RumbleType.kLeftRumble, 0)),
+                    new PrintCommand("AMP Position Complete")
             );
             case COLLECT -> addCommands(
                     new InstantCommand(() -> armSubSystem.setArmPosition(AMP)),
                     new WaitUntilCommand(() -> (AMP.getArmPosition() - armSubSystem.getArmAngle() < 12)),
                     new InstantCommand(() -> armSubSystem.setWristPosition(AMP)),
-                    new WaitUntilCommand(() -> AMP.getWristPosition() - armSubSystem.getWristAngle() < 3),
-                   noticeAmpComplete()
+                    new WaitUntilCommand(() -> AMP.getWristPosition() - armSubSystem.getWristAngle() < 5),
+                    new InstantCommand(() -> operatorController.setRumble(GenericHID.RumbleType.kLeftRumble, 0.5)),
+                    new WaitCommand(0.4),
+                    new InstantCommand(() -> operatorController.setRumble(GenericHID.RumbleType.kLeftRumble, 0)),
+                    new PrintCommand("AMP Position Complete")
             );
             default -> {
                 break;

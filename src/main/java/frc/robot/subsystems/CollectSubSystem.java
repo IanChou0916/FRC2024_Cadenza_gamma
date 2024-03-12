@@ -70,15 +70,15 @@ public class CollectSubSystem extends SubsystemBase {
   }
   public void shootAMP(){
     mCollectIntake.getPIDController().setReference(REVERSE_AMP_SPEED, ControlType.kVelocity);
-    //mCollectIntake.getPIDController().setReference(-1,ControlType.kPosition);
+
   }
 
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    //SmartDashboard.putNumber("Collect Speed", mCollectIntake.getEncoder().getVelocity());
-    //SmartDashboard.putNumber("Collect Position", mCollectIntake.getEncoder().getPosition());
+    SmartDashboard.putNumber("Collect Speed", mCollectIntake.getEncoder().getVelocity());
+    SmartDashboard.putNumber("Collect Position", mCollectIntake.getEncoder().getPosition());
   }
 
 }

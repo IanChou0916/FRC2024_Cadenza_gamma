@@ -1,8 +1,6 @@
 package frc.robot.subsystems;
 
-import com.revrobotics.CANSparkBase;
-import com.revrobotics.CANSparkLowLevel;
-import com.revrobotics.CANSparkMax;
+import com.revrobotics.*;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -10,15 +8,19 @@ import static frc.robot.Constants.HangConstants.*;
 import static frc.robot.RobotMap.HangMap.*;
 
 public class HangSubSystem extends SubsystemBase {
-    private CANSparkMax mHangLeftMotor = new CANSparkMax(HANG_LEFT_MOTOR, CANSparkLowLevel.MotorType.kBrushless);
-    private CANSparkMax mHangRightMotor = new CANSparkMax(HANG_RIGHT_MOTOR, CANSparkLowLevel.MotorType.kBrushless);
+    private final CANSparkFlex mHangLeftMotor = new CANSparkFlex(HANG_LEFT_MOTOR, CANSparkLowLevel.MotorType.kBrushless);
+    private final CANSparkFlex mHangRightMotor = new CANSparkFlex(HANG_RIGHT_MOTOR, CANSparkLowLevel.MotorType.kBrushless);
+    private SparkLimitSwitch mLeftHangSwitch;
+    private SparkLimitSwitch mRightHangSwitch;
 
     public HangSubSystem(){
         configHang(mHangLeftMotor,HANG_LEFT_INVERTED);
         configHang(mHangRightMotor,HANG_RIGHT_INVERTED);
+
+        stopHangMotor(); // To ensure Hang Motor is stopped.
     }
 
-    private void configHang(CANSparkMax motor, boolean inversion){
+    private void configHang(CANSparkFlex motor, boolean inversion){
         motor.restoreFactoryDefaults();
 
         motor.getEncoder().setPositionConversionFactor(HANG_GEAR_RATIO);
@@ -36,7 +38,7 @@ public class HangSubSystem extends SubsystemBase {
         motor.setInverted(inversion);
         motor.burnFlash();
         motor.getEncoder().setPosition(0);
-        stopHangMotor(); // To ensure Hang Motor is stopped.
+
     }
     public void setLeftHangMotor(double velocity){
         mHangLeftMotor.getPIDController().setReference(velocity, CANSparkBase.ControlType.kVelocity);

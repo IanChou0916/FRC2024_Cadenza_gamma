@@ -7,6 +7,11 @@ package frc.robot;
 import com.pathplanner.lib.auto.AutoBuilder;
 
 import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.commands.PathPlannerAuto;
+import com.pathplanner.lib.path.PathConstraints;
+import com.pathplanner.lib.path.PathPlannerPath;
+import com.pathplanner.lib.path.PathPlannerTrajectory;
+import com.pathplanner.lib.util.*;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -19,6 +24,13 @@ import frc.robot.commands.HangCommands;
 import frc.robot.subsystems.HangSubSystem;
 import frc.robot.commands.drive.SwerveDriveCommand;
 import frc.robot.subsystems.*;
+
+import static edu.wpi.first.wpilibj.Joystick.AxisType.kX;
+import static edu.wpi.first.wpilibj.PS5Controller.Axis.*;
+import static edu.wpi.first.wpilibj.XboxController.Button.*;
+import static edu.wpi.first.wpilibj.XboxController.*;
+
+import java.util.List;
 
 import static frc.robot.Constants.ArmConstants.ARM_POSITIONS.SPEAKER;
 
@@ -35,51 +47,55 @@ public class RobotContainer {
 
   private final Field2d field;
   private final SendableChooser <Command> autoChooser;
+  private boolean hangFinished;
+
+
   public RobotContainer() {
-    configureBindings();
+    // This is the field that will be displayed on the SmartDashboard
 
-    field = new Field2d();  // This is the field that will be displayed on the SmartDashboard
+    field = new Field2d();
     SmartDashboard.putData("Field", field);
-    swerveSubSystem.setDefaultCommand(new SwerveDriveCommand(
-      swerveSubSystem,
-        () -> driveController.getRawAxis(XboxController.Axis.kLeftY.value),
-        () -> driveController.getRawAxis(XboxController.Axis.kLeftX.value),
-        () -> driveController.getRawAxis(XboxController.Axis.kRightX.value),
-        driveController::getPOV,
-        driveController::getLeftBumper,
-        driveController::getAButton));
-        
-
-      collectSubSystem.setDefaultCommand(new CollectShootCommands(
-        collectSubSystem,
-        shootSubSystem,
-        operatorController::getPOV
-        ));
-
-      armSubSystem.setDefaultCommand(new ArmCommands(
-            armSubSystem,
-            operatorController::getStartButton,
-            operatorController::getBackButton,
-            operatorController::getLeftBumper,
-            operatorController::getRightBumper
-        ));
-
-
-
-      hangSubSystem.setDefaultCommand(new HangCommands(
-              hangSubSystem,
-              driveController::getXButton,
-              driveController::getBButton,
-              driveController::getStartButton,
-              driveController::getBackButton
-      ));
-        
     autoChooser = AutoBuilder.buildAutoChooser();
     NamedCommands.registerCommand("TestCommand",new PrintCommand("Hello World!"));
     NamedCommands.registerCommand("setAmpPosition",new PrintCommand("AMP"));
     SmartDashboard.putData("Auto Mode", autoChooser);
     selectAuto();
 
+    swerveSubSystem.setDefaultCommand(new SwerveDriveCommand(
+            swerveSubSystem,
+            driveController::getLeftY,
+            driveController::getLeftX,
+            driveController::getRightX,
+            driveController::getPOV,
+            driveController::getLeftBumper,
+            driveController::getAButton)); // Vision Detect.
+
+
+    collectSubSystem.setDefaultCommand(new CollectShootCommands(
+            collectSubSystem,
+            shootSubSystem,
+            operatorController::getPOV
+    ));
+
+    armSubSystem.setDefaultCommand(new ArmCommands(
+            armSubSystem,
+            operatorController::getStartButton,
+            operatorController::getBackButton,
+            operatorController::getLeftBumper,
+            operatorController::getRightBumper
+    ));
+
+
+
+    hangSubSystem.setDefaultCommand(new HangCommands(
+            hangSubSystem,
+            driveController::getXButton, // Up Left
+            driveController::getBButton, // Down Left
+            driveController::getStartButton, // Up Right
+            driveController::getBackButton // Down Right.
+    ));
+
+    configureBindings();
   }
 
   public void robotInit(){
@@ -87,18 +103,18 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
-    new JoystickButton(driveController, 6) // Right Bumper
+    new JoystickButton(driveController, kRightBumper.value) // Right Bumper
            .onTrue(new InstantCommand(swerveSubSystem::zeroGyro));
-    new JoystickButton(operatorController,XboxController.Button.kX.value)
+    new JoystickButton(operatorController,kX.value)
             .onTrue(positionManager.TargetAmpPosition());
-    new JoystickButton(operatorController,XboxController.Button.kA.value)
+    new JoystickButton(operatorController,kA.value)
             .onTrue(positionManager.TargetCollectPosition());
-    new JoystickButton(operatorController,XboxController.Button.kB.value)
+    new JoystickButton(operatorController,kB.value)
             .onTrue(positionManager.TargetSpeakerPosition());
   }
 
   public Command getAutonomousCommand() {
-      return autoChooser.getSelected();
+    return autoChooser.getSelected();
   }
   private void selectAuto(){
 
@@ -106,6 +122,7 @@ public class RobotContainer {
     autoChooser.addOption("Mid Leave",AutoBuilder.buildAuto("MID_LEAVE"));
   }
 }
+
 
   
 

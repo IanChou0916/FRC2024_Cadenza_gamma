@@ -28,10 +28,10 @@ public class Constants {
         public static final RumbleType SHOOT_RUMBLE = kRightRumble;
     }
     public static final class SwerveConstants{
-        public final static Rotation2d FRONT_LEFT_ANGLE_OFFSET = Rotation2d.fromDegrees(328.44726625-180);
+        public final static Rotation2d FRONT_LEFT_ANGLE_OFFSET = Rotation2d.fromDegrees(145.546875);
         public final static Rotation2d BACK_LEFT_ANGLE_OFFSET = Rotation2d.fromDegrees(271.7578125);
-        public final static Rotation2d BACK_RIGHT_ANGLE_OFFSET = Rotation2d.fromDegrees(249.2578125);
-        public final static Rotation2d FRONT_RIGHT_ANGLE_OFFSET = Rotation2d.fromDegrees(208.125-180);
+        public final static Rotation2d BACK_RIGHT_ANGLE_OFFSET = Rotation2d.fromDegrees(246.9726556);
+        public final static Rotation2d FRONT_RIGHT_ANGLE_OFFSET = Rotation2d.fromDegrees(21.3574218);
 
         //
         public static final double SWERVE_CHASSIS_TRACKWIDTH_METERS = 0.62865;
@@ -64,7 +64,7 @@ public class Constants {
 
 
         public static final NeutralModeValue DRIVE_NEUTRAL_MODE = NeutralModeValue.Brake;
-        public static final NeutralModeValue ANGLE_NEUTRAL_MODE = NeutralModeValue.Brake;
+        public static final NeutralModeValue ANGLE_NEUTRAL_MODE = NeutralModeValue.Coast;
         public static final SwerveDriveKinematics L2_SwerveDriveKinematics = new SwerveDriveKinematics(
                 new Translation2d(SWERVE_CHASSIS_TRACKWIDTH_METERS / 2, SWERVE_CHASSIS_WHEELBASE_METERS / 2),
                 new Translation2d(-SWERVE_CHASSIS_TRACKWIDTH_METERS / 2, SWERVE_CHASSIS_WHEELBASE_METERS / 2),
@@ -83,8 +83,8 @@ public class Constants {
         //public static final double SWERVE_AUTO_Z_PID[] = {5.0, 0.0, 0.0}; // TODO : Using Tuner.
 
         public static final HolonomicPathFollowerConfig SwervePathFollower = new HolonomicPathFollowerConfig(
-                new PIDConstants(0.05,0.0,0.0), // TODO : Using Tuner for XY.
-                new PIDConstants(0.05,0.0,0.0), // TODO : Using Tuner for Rotate.
+                new PIDConstants(0.000001, 0.006, 0.00001), // TODO : Using Tuner for XY.
+                new PIDConstants(0.001, 0.006, 0), // TODO : Using Tuner for Rotate.
                 SwerveConstants.SWERVE_MAX_SPEED, // MaxSpeed in m/s
                 0.4, // DriveBaseRadius
                 new ReplanningConfig()
@@ -133,6 +133,9 @@ public class Constants {
         public static final double WRIST_KV = 0.05521/MAX_VOLTAGE;
         public static final double WRIST_KA = 0.0012087/MAX_VOLTAGE;
 
+        public static final double ARM_OFFSET = 10.837714;
+        public static final double WRIST_OFFSET = 159.7911644;
+
         public static final int ARM_CURRENT_LIMIT = 40;
         public static final int WRIST_CURRENT_LIMIT = 40;
 
@@ -156,11 +159,12 @@ public class Constants {
 
         public enum ARM_POSITIONS {
             // TODO : Source,FORWARD_SPEAKER Position TBD to use.
-            AMP(57.954227,111.052642),
-            SPEAKER(23.179,122.967119),
-            COLLECT(7.6614913,110.2801208),
-            SOURCE(46.36526,158.85238),
-            FORWARD_SPEAKER(0,0);
+            AMP(57.954227,112.152642),
+            SPEAKER(23.179,124.067119),
+            COLLECT(7.6614913,111.3801208),
+            SOURCE(46.36526,160.35238),
+            FORWARD_SPEAKER(0,0),
+            HANG(87.1,120.0);
             private double ArmPosition;
             private double WristPosition;
             private ARM_POSITIONS(double ArmPosition,double WristPosition){
@@ -191,11 +195,12 @@ public class Constants {
 
     public static final class VisionConstants{
         public static final double VISION_POSE_TRUST_WORTHINESS = 1;
+        public static final double[] VISION_AIM_PID = {0.01,0,0};
 
         public static final double VISION_AIM_KP = 0.01;
         public static final double VISION_AIM_KI = 0;
         public static final double VISION_AIM_KD = 0;
-        public static  final  double VISION_AIM_TOLERANCE = 0;
+        public static final double VISION_AIM_TOLERANCE = 0;
         public static final double VISION_AIM_INTEGRATOR_RANGE = 0.5;
     }
 

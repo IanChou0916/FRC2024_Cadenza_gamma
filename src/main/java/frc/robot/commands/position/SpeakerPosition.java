@@ -27,17 +27,26 @@ public class SpeakerPosition extends SequentialCommandGroup {
                     new WaitUntilCommand(()-> (SPEAKER.getArmPosition() - armSubSystem.getArmAngle() < 5)),
                     new InstantCommand(()-> armSubSystem.setWristPosition(SPEAKER)),
                     new WaitUntilCommand(()-> Math.abs(SPEAKER.getWristPosition() - armSubSystem.getWristAngle() ) < 4),
-                    noticeSpeakerPosition()
+                    new InstantCommand(() -> operatorController.setRumble(GenericHID.RumbleType.kRightRumble, 0.5)),
+                    new WaitCommand(0.4),
+                    new InstantCommand(()->operatorController.setRumble(GenericHID.RumbleType.kRightRumble,0)),
+                    new PrintCommand("Speaker Position Complete")
             );
             case SPEAKER -> addCommands(
-                    noticeSpeakerPosition()
+                    new InstantCommand(() -> operatorController.setRumble(GenericHID.RumbleType.kRightRumble, 0.5)),
+                    new WaitCommand(0.4),
+                    new InstantCommand(()->operatorController.setRumble(GenericHID.RumbleType.kRightRumble,0)),
+                    new PrintCommand("Speaker Position Complete")
             );
             case AMP -> addCommands(
                     new InstantCommand(() -> armSubSystem.setWristPosition(SPEAKER)),
                     new WaitUntilCommand(()->Math.abs(SPEAKER.getWristPosition() - armSubSystem.getWristAngle() )< 5),
                     new InstantCommand(()-> armSubSystem.setArmPosition(SPEAKER)),
                     new WaitUntilCommand(()-> Math.abs(SPEAKER.getArmPosition() - armSubSystem.getArmAngle() )< 5),
-                    noticeSpeakerPosition()
+                    new InstantCommand(() -> operatorController.setRumble(GenericHID.RumbleType.kRightRumble, 0.5)),
+                    new WaitCommand(0.4),
+                    new InstantCommand(()->operatorController.setRumble(GenericHID.RumbleType.kRightRumble,0)),
+                    new PrintCommand("Speaker Position Complete")
             );
             default -> {
                 break;

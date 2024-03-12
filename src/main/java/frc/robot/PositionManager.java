@@ -12,10 +12,10 @@ import static frc.robot.Constants.ArmConstants.*;
 import static frc.robot.Constants.ArmConstants.ARM_POSITIONS.*;
 
 public class PositionManager {
-    private final ArmSubSystem armSubSystem;
-    private final CollectSubSystem collectSubSystem;
-    private final XboxController operatorController;
-    private ARM_POSITIONS presentPosition;
+    protected final ArmSubSystem armSubSystem;
+    protected final CollectSubSystem collectSubSystem;
+    protected final XboxController operatorController;
+    protected ARM_POSITIONS presentPosition;
 
     public PositionManager(
             ArmSubSystem armSubSystem,

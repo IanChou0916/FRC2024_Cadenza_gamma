@@ -22,7 +22,6 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import frc.lib.convert.Conversions;
 import frc.lib.util.ModuleState;
 import frc.lib.util.SwerveTypeConstants;
-import frc.robot.Constants;
 import frc.robot.RobotMap;
 import static frc.robot.Constants.SwerveConstants.*;
 
@@ -31,7 +30,7 @@ public class swerveModule {
 
     public int moduleNumber;
     private SwerveTypeConstants swerveTypeConstants;
-    private Rotation2d angleOffset ;
+    private Rotation2d angleOffset;
 
 
     private TalonFX mDriveFalcon;
@@ -57,16 +56,14 @@ public class swerveModule {
         this.angleOffset = angleOffset;
 
         mAngleCanCoder = new CANcoder(canCoderID,RobotMap.SWERVE_CANBUS_TYPE);
-        mAngleCanCoderConfig();
+        mAngleCanCoderConfig(angleOffset); //config ZeroOffset.
 
         mDriveFalcon = new TalonFX(driveMotorID, RobotMap.SWERVE_CANBUS_TYPE);
         mDriveConfig();
         mAngleFalcon = new TalonFX(angleMotorID, RobotMap.SWERVE_CANBUS_TYPE);
         mAngleConfig();
-        resetToAbosolute();
-        //mAngleEncoder = mAngleNeo.getEncoder();
 
-        //lastAngle = getState().angle;
+        resetToAbosolute(); // syncPosition.
 
     }
 
@@ -148,13 +145,14 @@ public class swerveModule {
         mDriveFalcon.getConfigurator().apply(driveConfig);
     }
     public void resetToAbosolute(){
-        double absolute = (getCanCoder().getDegrees() - angleOffset.getDegrees());
+        double absolute = -getCanCoder().getDegrees();
+                //(getCanCoder().getDegrees() - angleOffset.getDegrees());
         //System.out.printf("%.2f",absolute);
         mAngleFalcon.setPosition(Conversions.degreesToFalcon(absolute));
     }
     public void stop() {
-        mDriveFalcon.stopMotor();
-        mAngleFalcon.stopMotor();
+        mDriveFalcon.set(0);
+        mAngleFalcon.set(0);
     }
 
     private void mAngleConfig(){
@@ -179,11 +177,11 @@ public class swerveModule {
 
     }
 
-    private void mAngleCanCoderConfig(){
+    private void mAngleCanCoderConfig(Rotation2d offset ){
         CANcoderConfiguration canConfig = new CANcoderConfiguration();
         canConfig.MagnetSensor.SensorDirection =SensorDirectionValue.CounterClockwise_Positive;
         canConfig.MagnetSensor.AbsoluteSensorRange = AbsoluteSensorRangeValue.Unsigned_0To1;
-        //canConfig.MagnetSensor.MagnetOffset = 0.0;
+        canConfig.MagnetSensor.MagnetOffset = offset.getDegrees();
         mAngleCanCoder.getConfigurator().apply(canConfig);
 
     }

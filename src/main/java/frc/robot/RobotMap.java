@@ -39,7 +39,8 @@ public class RobotMap {
         public static final int HANG_RIGHT_MOTOR = 6;
     }
     public static final class Vision{
-        public final static String LIMELIGHT_CENTER_NAME = "limelight";
+        public final static String LIMELIGHT_CENTER_NAME = "limelight"; // Object Detection
+
     }
 
  // Using NEO and NEO 550.
