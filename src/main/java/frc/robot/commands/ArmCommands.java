@@ -17,7 +17,7 @@ public class ArmCommands extends Command {
     private final BooleanSupplier armAddSupplier;
     private final BooleanSupplier armMinusSupplier;
     private final BooleanSupplier wristAddSupplier;
-    private final BooleanSupplier wristminusSupplier;
+    private final BooleanSupplier wristmiunsSupplier;
     private double armAngle = 0;
     private double wristAngle = 0;
 
@@ -29,12 +29,12 @@ public class ArmCommands extends Command {
             BooleanSupplier armAddSupplier,
             BooleanSupplier armMinusSupplier,
             BooleanSupplier wristAddSupplier,
-            BooleanSupplier wristminusSupplier){
+            BooleanSupplier wristmiunsSupplier){
         this.armSubSystem = armSubSystem;
         this.armAddSupplier = armAddSupplier;
         this.armMinusSupplier = armMinusSupplier;
         this.wristAddSupplier = wristAddSupplier;
-        this.wristminusSupplier = wristminusSupplier;
+        this.wristmiunsSupplier = wristmiunsSupplier;
         addRequirements(armSubSystem);
     }
     @Override
@@ -69,7 +69,7 @@ public class ArmCommands extends Command {
                 timer.restart();
             }
         }
-        else if (wristminusSupplier.getAsBoolean()) {
+        else if (wristmiunsSupplier.getAsBoolean()) {
             if(wristAngle >= WRIST_REVERSE_LIMIT){wristAngle-=WRIST_CONTROL_VALUE;}
             timer.start();
             if (timer.get() >= WRIST_CONTROL_WAITTIME && wristAngle <= WRIST_REVERSE_LIMIT) {

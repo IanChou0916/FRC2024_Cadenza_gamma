@@ -35,14 +35,14 @@ public class ShootSubSystem extends SubsystemBase {
         config.Slot0.kV = SHOOT_PID[3];
 
         config.CurrentLimits.StatorCurrentLimitEnable = true;
-        config.CurrentLimits.StatorCurrentLimit = 35;
-        config.CurrentLimits.SupplyCurrentThreshold = 35;
+        config.CurrentLimits.StatorCurrentLimit = SHOOT_CURRENT_LIMIT;
+        config.CurrentLimits.SupplyCurrentThreshold = SHOOT_CURRENT_LIMIT;
         config.CurrentLimits.SupplyTimeThreshold = 0.1;
         config.MotorOutput.NeutralMode = NeutralModeValue.Coast;
         config.MotorOutput.Inverted = inversion ? InvertedValue.Clockwise_Positive
                 :InvertedValue.CounterClockwise_Positive;
 
-        config.Feedback.SensorToMechanismRatio = 2;
+        config.Feedback.SensorToMechanismRatio = SHOOT_GEAR_RATIO;
         config.ClosedLoopGeneral.ContinuousWrap = true;
         motor.getConfigurator().apply(config);
     }

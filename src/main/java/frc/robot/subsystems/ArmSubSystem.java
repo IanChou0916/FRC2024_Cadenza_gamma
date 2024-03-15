@@ -9,7 +9,6 @@ import com.revrobotics.SparkAbsoluteEncoder.Type;
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import static frc.robot.Constants.ArmConstants.*;
@@ -87,9 +86,9 @@ public class ArmSubSystem extends SubsystemBase {
         mWristAbsoulteEncoder.setPositionConversionFactor(360);
         mWristAbsoulteEncoder.setZeroOffset(WRIST_OFFSET);
         
-        mWristMotor.getPIDController().setP(WRIST_PID[0], 0);
-        mWristMotor.getPIDController().setI(WRIST_PID[1], 0);
-        mWristMotor.getPIDController().setD(WRIST_PID[2], 0);
+        mWristMotor.getPIDController().setP(WRIST_UP_PID[0], 0);
+        mWristMotor.getPIDController().setI(WRIST_UP_PID[1], 0);
+        mWristMotor.getPIDController().setD(WRIST_UP_PID[2], 0);
 
         
         mWristMotor.setSmartCurrentLimit(WRIST_CURRENT_LIMIT);
@@ -150,13 +149,13 @@ public class ArmSubSystem extends SubsystemBase {
     public void setWristPosition(double degrees){
         double groundDegrees = degrees+mArmAbsoluteEncoder.getPosition()-90;
         mWristMotor.getPIDController().setReference(degrees,CANSparkFlex.ControlType.kPosition,0,wristFeedForward.calculate(groundDegrees,0));
+
     }
     public void setWristPosition(ARM_POSITIONS position){
         double groundDegrees = position.getWristPosition()+mArmAbsoluteEncoder.getPosition()-90;
+
         mWristMotor.getPIDController().setReference(position.getWristPosition(), CANSparkFlex.ControlType.kPosition,0,wristFeedForward.calculate(groundDegrees,0));
     }
-
-
     public double getArmAngle(){
         return mArmAbsoluteEncoder.getPosition();
     }
@@ -184,6 +183,7 @@ public class ArmSubSystem extends SubsystemBase {
         SmartDashboard.putNumber("Wrist Position", mWristMotor.getEncoder().getPosition());
         SmartDashboard.putNumber("Arm Encoder",mArmAbsoluteEncoder.getPosition());
         SmartDashboard.putNumber("Wrist Encoder",mWristAbsoulteEncoder.getPosition());
+
     }
     
 }

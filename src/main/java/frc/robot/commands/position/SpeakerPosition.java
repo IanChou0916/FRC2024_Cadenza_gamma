@@ -48,6 +48,16 @@ public class SpeakerPosition extends SequentialCommandGroup {
                     new InstantCommand(()->operatorController.setRumble(GenericHID.RumbleType.kRightRumble,0)),
                     new PrintCommand("Speaker Position Complete")
             );
+            case NORMAL -> addCommands(
+                    new InstantCommand(() -> armSubSystem.setWristPosition(SPEAKER)),
+                    new WaitUntilCommand(()->Math.abs(SPEAKER.getWristPosition() - armSubSystem.getWristAngle() )< 6),
+                    new InstantCommand(()-> armSubSystem.setArmPosition(SPEAKER)),
+                    new WaitUntilCommand(()-> Math.abs(SPEAKER.getArmPosition() - armSubSystem.getArmAngle() )< 5),
+                    new InstantCommand(() -> operatorController.setRumble(GenericHID.RumbleType.kRightRumble, 0.5)),
+                    new WaitCommand(0.4),
+                    new InstantCommand(()->operatorController.setRumble(GenericHID.RumbleType.kRightRumble,0)),
+                    new PrintCommand("Speaker Position Complete")
+            );
             default -> {
                 break;
             }

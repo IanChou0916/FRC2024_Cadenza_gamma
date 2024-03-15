@@ -23,14 +23,14 @@ public class SwerveDriveCommand extends Command {
     private final DoubleSupplier rotationSup;
     private final BooleanSupplier robotCentricSup;
     private final IntSupplier povSlowMoveSup;
-    private final BooleanSupplier visionAimSup;
+    private final DoubleSupplier visionAimSup;
     private final PIDController visionAimPID =
             new PIDController(VISION_AIM_KP,VISION_AIM_KI,VISION_AIM_KD);
     public SwerveDriveCommand(
             SwerveSubSystem swerveSubsystem, DoubleSupplier translationSup,
             DoubleSupplier strafeSup, DoubleSupplier rotationSup,
             IntSupplier povSlowMoveSup, BooleanSupplier robotCentricSup,
-            BooleanSupplier visionAimSup) {
+            DoubleSupplier visionAimSup) {
         this.swerveSubsystem = swerveSubsystem;
         addRequirements(swerveSubsystem);
 
@@ -88,7 +88,7 @@ public class SwerveDriveCommand extends Command {
                 strafeVal = MathUtil.applyDeadband(strafeSup.getAsDouble(), DRIVE_JOYSTICK_DEADBAND);
         }
         double visionAimNum = LimelightHelpers.getTX(LIMELIGHT_CENTER_NAME);
-        if (visionAimSup.getAsBoolean()&&visionAimNum!=0.0) {
+        if ((visionAimSup.getAsDouble()>0.5) && visionAimNum!=0.0) {
             double vision_rotation = visionAimPID.calculate(visionAimNum, 0);
             /* Vision Drive */
             swerveSubsystem.drive(

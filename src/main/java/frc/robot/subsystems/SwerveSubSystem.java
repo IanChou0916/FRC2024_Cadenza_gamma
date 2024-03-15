@@ -23,7 +23,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.lib.util.SwerveTypeConstants;
 import frc.robot.Constants;
-import frc.robot.RobotMap;
+
+import static frc.robot.RobotMap.*;
 
 import static frc.robot.Constants.AutoConstants.SwervePathFollower;
 import static frc.robot.Constants.NAVX_INVERTED;
@@ -44,48 +45,33 @@ public class SwerveSubSystem extends SubsystemBase {
         swerveModules = new swerveModule[]{
                 new swerveModule(
                         0,SwerveTypeConstants.SDSMK4I_L1(),
-                        RobotMap.FRONT_LEFT_DRIVE_MOTOR_ID,
-                        RobotMap.FRONT_LEFT_ANGLE_MOTOR_ID,
-                        RobotMap.FRONT_LEFT_CANCODER_MOTOR_ID,
+                        FRONT_LEFT_DRIVE_MOTOR_ID,
+                        FRONT_LEFT_ANGLE_MOTOR_ID,
+                        FRONT_LEFT_CANCODER_MOTOR_ID,
                         FRONT_LEFT_ANGLE_OFFSET),
                 new swerveModule(
                         1,SwerveTypeConstants.SDSMK4I_L1(),
-                        RobotMap.BACK_LEFT_DRIVE_MOTOR_ID,
-                        RobotMap.BACK_LEFT_ANGLE_MOTOR_ID,
-                        RobotMap.BACK_LEFT_CANCODER_MOTOR_ID,
+                        BACK_LEFT_DRIVE_MOTOR_ID,
+                        BACK_LEFT_ANGLE_MOTOR_ID,
+                        BACK_LEFT_CANCODER_MOTOR_ID,
                         BACK_LEFT_ANGLE_OFFSET),
                 new swerveModule(
                         2,SwerveTypeConstants.SDSMK4I_L1(),
-                        RobotMap.BACK_RIGHT_DRIVE_MOTOR_ID,
-                        RobotMap.BACK_RIGHT_ANGLE_MOTOR_ID,
-                        RobotMap.BACK_RIGHT_CANCODER_MOTOR_ID,
+                        BACK_RIGHT_DRIVE_MOTOR_ID,
+                        BACK_RIGHT_ANGLE_MOTOR_ID,
+                        BACK_RIGHT_CANCODER_MOTOR_ID,
                         BACK_RIGHT_ANGLE_OFFSET),
                 new swerveModule(
                         3,SwerveTypeConstants.SDSMK4I_L1(),
-                        RobotMap.FRONT_RIGHT_DRIVE_MOTOR_ID,
-                        RobotMap.FRONT_RIGHT_ANGLE_MOTOR_ID,
-                        RobotMap.FRONT_RIGHT_CANCODER_MOTOR_ID,
+                        FRONT_RIGHT_DRIVE_MOTOR_ID,
+                        FRONT_RIGHT_ANGLE_MOTOR_ID,
+                        FRONT_RIGHT_CANCODER_MOTOR_ID,
                         FRONT_RIGHT_ANGLE_OFFSET),
         };
-        AutoBuilder.configureHolonomic(
-                this::getPose,
-                this::resetOdometry,
-                this::getChassisSpeeds,
-                this::setChassisSpeeds,
-                SwervePathFollower,
-                ()-> {
-                    var alliance = DriverStation.getAlliance();
-                    if(alliance.isPresent()){
-                        return alliance.get() == DriverStation.Alliance.Red;
-                    }
-                    return false;
-                },
-                this
-        );
+
+
 
         Timer.delay(0.5);
-        zeroGyro();
-
         resetModulesToAbsolute();
 
         //swerveDriveKinematics = L2_SwerveDriveKinematics;
@@ -177,6 +163,7 @@ public class SwerveSubSystem extends SubsystemBase {
             SmartDashboard.putNumber("Mod " + module.moduleNumber + " Integrated", module.getPosition().angle.getDegrees());
             SmartDashboard.putNumber("Mod " + module.moduleNumber + " Velocity", module.getState().speedMetersPerSecond);
         }
+
 
 
 

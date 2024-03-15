@@ -22,6 +22,7 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import frc.lib.convert.Conversions;
 import frc.lib.util.ModuleState;
 import frc.lib.util.SwerveTypeConstants;
+import frc.robot.Constants;
 import frc.robot.RobotMap;
 import static frc.robot.Constants.SwerveConstants.*;
 
@@ -30,7 +31,7 @@ public class swerveModule {
 
     public int moduleNumber;
     private SwerveTypeConstants swerveTypeConstants;
-    private Rotation2d angleOffset;
+    private Rotation2d angleOffset ;
 
 
     private TalonFX mDriveFalcon;
@@ -46,7 +47,7 @@ public class swerveModule {
     //private final PositionVoltage ANGLE_POSITION = new PositionVoltage(0);
 
     private final SimpleMotorFeedforward fMotorFeedforward = new SimpleMotorFeedforward(
-            SWERVE_DRIVE_KS, SWERVE_DRIVE_KV, SWERVE_DRIVE_KA);
+            SWERVE_DRIVE_KS, SWERVE_DRIVE_KV,SWERVE_DRIVE_KA);
 
     public swerveModule(int moduleNumber,
                         SwerveTypeConstants swerveTypeConstants,
@@ -56,14 +57,16 @@ public class swerveModule {
         this.angleOffset = angleOffset;
 
         mAngleCanCoder = new CANcoder(canCoderID,RobotMap.SWERVE_CANBUS_TYPE);
-        mAngleCanCoderConfig(angleOffset); //config ZeroOffset.
+        mAngleCanCoderConfig();
 
         mDriveFalcon = new TalonFX(driveMotorID, RobotMap.SWERVE_CANBUS_TYPE);
         mDriveConfig();
         mAngleFalcon = new TalonFX(angleMotorID, RobotMap.SWERVE_CANBUS_TYPE);
         mAngleConfig();
+        resetToAbosolute();
+        //mAngleEncoder = mAngleNeo.getEncoder();
 
-        resetToAbosolute(); // syncPosition.
+        //lastAngle = getState().angle;
 
     }
 
@@ -145,14 +148,13 @@ public class swerveModule {
         mDriveFalcon.getConfigurator().apply(driveConfig);
     }
     public void resetToAbosolute(){
-        double absolute = -getCanCoder().getDegrees();
-                //(getCanCoder().getDegrees() - angleOffset.getDegrees());
+        double absolute = (getCanCoder().getDegrees() - angleOffset.getDegrees());
         //System.out.printf("%.2f",absolute);
         mAngleFalcon.setPosition(Conversions.degreesToFalcon(absolute));
     }
     public void stop() {
-        mDriveFalcon.set(0);
-        mAngleFalcon.set(0);
+        mDriveFalcon.stopMotor();
+        mAngleFalcon.stopMotor();
     }
 
     private void mAngleConfig(){
@@ -164,7 +166,7 @@ public class swerveModule {
         angleConfig.CurrentLimits.StatorCurrentLimitEnable = SWERVE_ANGLE_CURRENT_ENABLED;
         angleConfig.CurrentLimits.StatorCurrentLimit = SWERVE_ANGLE_CURRENT_LIMIT;
         angleConfig.CurrentLimits.SupplyCurrentThreshold = SWERVE_ANGLE_PEAK_CURRENT_LIMIT;
-        angleConfig.CurrentLimits.SupplyTimeThreshold = SWERVE_ANGLE_PEAK_CURRENT_DURATION;
+        angleConfig.CurrentLimits.SupplyTimeThreshold =SWERVE_ANGLE_PEAK_CURRENT_DURATION;
 
         angleConfig.MotorOutput.NeutralMode = ANGLE_NEUTRAL_MODE;
         angleConfig.MotorOutput.Inverted = swerveTypeConstants.angleMotorInverted;
@@ -177,11 +179,11 @@ public class swerveModule {
 
     }
 
-    private void mAngleCanCoderConfig(Rotation2d offset ){
+    private void mAngleCanCoderConfig(){
         CANcoderConfiguration canConfig = new CANcoderConfiguration();
         canConfig.MagnetSensor.SensorDirection =SensorDirectionValue.CounterClockwise_Positive;
         canConfig.MagnetSensor.AbsoluteSensorRange = AbsoluteSensorRangeValue.Unsigned_0To1;
-        canConfig.MagnetSensor.MagnetOffset = offset.getDegrees();
+        //canConfig.MagnetSensor.MagnetOffset = 0.0;
         mAngleCanCoder.getConfigurator().apply(canConfig);
 
     }

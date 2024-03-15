@@ -13,6 +13,7 @@ public class HangSubSystem extends SubsystemBase {
     private SparkLimitSwitch mLeftHangSwitch;
     private SparkLimitSwitch mRightHangSwitch;
 
+
     public HangSubSystem(){
         configHang(mHangLeftMotor,HANG_LEFT_INVERTED);
         configHang(mHangRightMotor,HANG_RIGHT_INVERTED);
@@ -54,8 +55,12 @@ public class HangSubSystem extends SubsystemBase {
 
     @Override
     public void periodic() {
+
         SmartDashboard.putNumber("mLeftHang",mHangLeftMotor.getEncoder().getVelocity());
         SmartDashboard.putNumber("mRightHang",mHangRightMotor.getEncoder().getVelocity());
+
+        SmartDashboard.putNumber("mLeftHangRotation",mHangLeftMotor.getEncoder().getPosition());
+        SmartDashboard.putNumber("mRightHangRotation",mHangRightMotor.getEncoder().getPosition());
 
     }
 }

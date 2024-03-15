@@ -31,6 +31,7 @@ public class CollectSubSystem extends SubsystemBase {
 
   private void collectConfig() {
     mCollectIntake.restoreFactoryDefaults();
+    mCollectIntake.clearFaults();
 
     mCollectEncoder.setPositionConversionFactor(COLLECT_GEAR_RATIO);
     mCollectEncoder.setVelocityConversionFactor(COLLECT_GEAR_RATIO / 60.0);

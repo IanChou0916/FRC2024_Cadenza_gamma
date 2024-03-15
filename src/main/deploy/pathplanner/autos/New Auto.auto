@@ -16,12 +16,6 @@
                 }
               },
               {
-                "type": "path",
-                "data": {
-                  "pathName": "FrontToAmp"
-                }
-              },
-              {
                 "type": "named",
                 "data": {
                   "name": "setAmpPosition"

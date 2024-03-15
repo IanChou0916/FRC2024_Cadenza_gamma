@@ -9,7 +9,6 @@ import com.revrobotics.CANSparkBase;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
-import edu.wpi.first.wpilibj.GenericHID;
 import frc.lib.convert.Conversions;
 import static edu.wpi.first.wpilibj.GenericHID.*;
 import static edu.wpi.first.wpilibj.GenericHID.RumbleType.*;
@@ -26,12 +25,13 @@ public class Constants {
         public static final double NOTICE_VALUE = 0.5;
         public static final RumbleType COLLECT_RUMBLE = kLeftRumble;
         public static final RumbleType SHOOT_RUMBLE = kRightRumble;
+        public static final RumbleType NORMAL_RUMBLE = kLeftRumble;
     }
     public static final class SwerveConstants{
-        public final static Rotation2d FRONT_LEFT_ANGLE_OFFSET = Rotation2d.fromDegrees(145.546875);
-        public final static Rotation2d BACK_LEFT_ANGLE_OFFSET = Rotation2d.fromDegrees(271.7578125);
-        public final static Rotation2d BACK_RIGHT_ANGLE_OFFSET = Rotation2d.fromDegrees(246.9726556);
-        public final static Rotation2d FRONT_RIGHT_ANGLE_OFFSET = Rotation2d.fromDegrees(21.3574218);
+        public final static Rotation2d FRONT_LEFT_ANGLE_OFFSET = Rotation2d.fromRotations(0.405029);
+        public final static Rotation2d BACK_LEFT_ANGLE_OFFSET = Rotation2d.fromRotations(0.743896);
+        public final static Rotation2d BACK_RIGHT_ANGLE_OFFSET = Rotation2d.fromRotations(0.696777);
+        public final static Rotation2d FRONT_RIGHT_ANGLE_OFFSET = Rotation2d.fromRotations(0.054199);
 
         //
         public static final double SWERVE_CHASSIS_TRACKWIDTH_METERS = 0.62865;
@@ -64,7 +64,7 @@ public class Constants {
 
 
         public static final NeutralModeValue DRIVE_NEUTRAL_MODE = NeutralModeValue.Brake;
-        public static final NeutralModeValue ANGLE_NEUTRAL_MODE = NeutralModeValue.Coast;
+        public static final NeutralModeValue ANGLE_NEUTRAL_MODE = NeutralModeValue.Brake;
         public static final SwerveDriveKinematics L2_SwerveDriveKinematics = new SwerveDriveKinematics(
                 new Translation2d(SWERVE_CHASSIS_TRACKWIDTH_METERS / 2, SWERVE_CHASSIS_WHEELBASE_METERS / 2),
                 new Translation2d(-SWERVE_CHASSIS_TRACKWIDTH_METERS / 2, SWERVE_CHASSIS_WHEELBASE_METERS / 2),
@@ -74,16 +74,12 @@ public class Constants {
 
     }
 
-
-
-
-
     public static final class AutoConstants{
         //public static final double SWERVE_AUTO_XY_PID[] = {5.0, 0.0, 0.0}; // TODO : Using Tuner.
         //public static final double SWERVE_AUTO_Z_PID[] = {5.0, 0.0, 0.0}; // TODO : Using Tuner.
 
         public static final HolonomicPathFollowerConfig SwervePathFollower = new HolonomicPathFollowerConfig(
-                new PIDConstants(0.000001, 0.006, 0.00001), // TODO : Using Tuner for XY.
+                new PIDConstants(0.01, 0.006, 0.00001), // TODO : Using Tuner for XY.
                 new PIDConstants(0.001, 0.006, 0), // TODO : Using Tuner for Rotate.
                 SwerveConstants.SWERVE_MAX_SPEED, // MaxSpeed in m/s
                 0.4, // DriveBaseRadius
@@ -106,8 +102,8 @@ public class Constants {
         public static final double SHOOT_GEAR_RATIO = 2.0;
         public final static double[] SHOOT_PID = {0.003, 0.0, 0.0005,0.225};// TO DO : Using Tuner.
         public static final boolean SHOOT_INVERTED = true;
-        public static final double SHOOT_SPEED = 40; // 40 rotations per second.
-        public static final int SHOOT_CURRENT_LIMIT = 35;
+        public static final double SHOOT_SPEED = 30; // 40 rotations per second.
+        public static final int SHOOT_CURRENT_LIMIT = 40;
         public static final NeutralModeValue SHOOT_NETURAL_MODE = NeutralModeValue.Brake;
 
     }
@@ -118,9 +114,12 @@ public class Constants {
         //TODO : set PID DOWN for slot 1
         public static final double[] ARM_UP_PID = {0.09307, 0.0, 0.0509011};
         public static final double[] ARM_DOWN_PID = {0.01291,0.0,0.00509011};
-        public static final double[] WRIST_PID = {0.051312, 0, 0.001753,0.0};
+        public static final double[] WRIST_UP_PID = {0.051312, 0, 0.001753,0.0};
+        public static final double[] WRIST_DOWN_PID = {0.051312, 0, 0.001753,0.0};
         public static final int ARM_UP_SLOT = 0;
         public static final int ARM_DOWN_SLOT = 1;
+        public static final int WRIST_UO_SLOT = 0;
+        public static final int WRIST_DOWN_SLOT = 1;
 
         public static final double ARM_KG = 0.64071/MAX_VOLTAGE;
         public static final double ARM_KS = 0.10542/MAX_VOLTAGE;
@@ -164,6 +163,7 @@ public class Constants {
             COLLECT(7.6614913,111.3801208),
             SOURCE(46.36526,160.35238),
             FORWARD_SPEAKER(0,0),
+            NORMAL(42.2,60.63),
             HANG(87.1,120.0);
             private double ArmPosition;
             private double WristPosition;
@@ -188,7 +188,7 @@ public class Constants {
         public static final double HANG_GEAR_RATIO =1.0/64.0;
         public static final boolean HANG_LEFT_INVERTED = true;
         public static final boolean HANG_RIGHT_INVERTED = false;
-        public static final double HANG_SPEED = 0.5; // Rotates Per Second
+        public static final double HANG_SPEED = 1.0; // Rotates Per Second
     }
 
 
@@ -197,7 +197,7 @@ public class Constants {
         public static final double VISION_POSE_TRUST_WORTHINESS = 1;
         public static final double[] VISION_AIM_PID = {0.01,0,0};
 
-        public static final double VISION_AIM_KP = 0.01;
+        public static final double VISION_AIM_KP = 0.05;
         public static final double VISION_AIM_KI = 0;
         public static final double VISION_AIM_KD = 0;
         public static final double VISION_AIM_TOLERANCE = 0;

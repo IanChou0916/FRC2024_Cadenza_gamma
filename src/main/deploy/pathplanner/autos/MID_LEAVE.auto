@@ -6,6 +6,18 @@
     "data": {
       "commands": [
         {
+          "type": "named",
+          "data": {
+            "name": "Preload"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 3.0
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "Mid_Leave"
@@ -14,6 +26,6 @@
       ]
     }
   },
-  "folder": null,
+  "folder": "MID",
   "choreoAuto": false
 }

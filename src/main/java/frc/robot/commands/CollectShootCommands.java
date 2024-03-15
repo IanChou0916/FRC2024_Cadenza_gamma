@@ -30,21 +30,25 @@ public class CollectShootCommands extends Command {
     public void execute(){
         switch(collectSupplier.getAsInt()){
             case 0:
+                shootSubSystem.shootNote();
+                break;
+
+            case 90:
                 // TODO : added LED subSystem to notify drivers.
                 collectSubSystem.collectNote();
-
                 break;
-            case 90:
+
+            case 180:
                 collectSubSystem.stopCollect();
                 shootSubSystem.stopShoot();
                 break;
 
-            case 180:
+            case 270:
+
                 collectSubSystem.shootAMP();
                 break;
-            case 270:
-                shootSubSystem.shootNote();
-                break;
+
+
         }
     }
 }

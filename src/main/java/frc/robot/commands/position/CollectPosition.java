@@ -31,7 +31,7 @@ public class CollectPosition extends SequentialCommandGroup {
                     new InstantCommand(() -> armSubSystem.setArmPosition(COLLECT)),
                     new WaitUntilCommand(()-> (COLLECT.getArmPosition() - armSubSystem.getArmAngle() < 5)),
                     new InstantCommand(()-> armSubSystem.setWristPosition(COLLECT)),
-                    new WaitUntilCommand(()-> Math.abs(COLLECT.getWristPosition() - armSubSystem.getWristAngle() ) < 3),
+                    new WaitUntilCommand(()-> (COLLECT.getWristPosition() - armSubSystem.getWristAngle() ) < 5),
                     new InstantCommand(() -> operatorController.setRumble(COLLECT_RUMBLE, NOTICE_VALUE)),
                     new WaitCommand(0.4),
                     new InstantCommand(()->operatorController.setRumble(COLLECT_RUMBLE,0)),
@@ -39,9 +39,19 @@ public class CollectPosition extends SequentialCommandGroup {
             );
             case AMP -> addCommands(
                     new InstantCommand(() -> armSubSystem.setArmPosition(COLLECT.getArmPosition())),
-                    new WaitUntilCommand(()-> (armSubSystem.getArmAngle() - COLLECT.getArmPosition() < 15)),
+                    new WaitUntilCommand(()-> (armSubSystem.getArmAngle() - COLLECT.getArmPosition() < 5)),
                     new InstantCommand(()-> armSubSystem.setWristPosition(COLLECT)),
-                    new WaitUntilCommand(()-> Math.abs(COLLECT.getWristPosition() - armSubSystem.getWristAngle() )< 3),
+                    new WaitUntilCommand(()-> (COLLECT.getWristPosition() - armSubSystem.getWristAngle() )< 5),
+                    new InstantCommand(() -> operatorController.setRumble(COLLECT_RUMBLE, NOTICE_VALUE)),
+                    new WaitCommand(0.4),
+                    new InstantCommand(()->operatorController.setRumble(COLLECT_RUMBLE,0)),
+                    new PrintCommand("COLLECT Position Complete")
+            );
+            case NORMAL -> addCommands(
+                    new InstantCommand(()-> armSubSystem.setWristPosition(COLLECT)),
+                    new WaitUntilCommand(()-> (COLLECT.getWristPosition() - armSubSystem.getWristAngle() )< 5),
+                    new InstantCommand(() -> armSubSystem.setArmPosition(COLLECT.getArmPosition())),
+                    new WaitUntilCommand(()-> (armSubSystem.getArmAngle() - COLLECT.getArmPosition()) < 5),
                     new InstantCommand(() -> operatorController.setRumble(COLLECT_RUMBLE, NOTICE_VALUE)),
                     new WaitCommand(0.4),
                     new InstantCommand(()->operatorController.setRumble(COLLECT_RUMBLE,0)),

@@ -1,16 +1,22 @@
 {
   "version": 1.0,
-  "startingPose": {
-    "position": {
-      "x": 1.3273251237860504,
-      "y": 5.571203241171914
-    },
-    "rotation": 0
-  },
+  "startingPose": null,
   "command": {
     "type": "sequential",
     "data": {
       "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "Preload"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 2.0
+          }
+        },
         {
           "type": "path",
           "data": {
@@ -20,6 +26,6 @@
       ]
     }
   },
-  "folder": null,
+  "folder": "MID",
   "choreoAuto": false
 }

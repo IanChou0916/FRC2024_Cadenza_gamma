@@ -12,6 +12,7 @@ import com.pathplanner.lib.path.PathConstraints;
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.path.PathPlannerTrajectory;
 import com.pathplanner.lib.util.*;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -21,6 +22,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.ArmCommands;
 import frc.robot.commands.CollectShootCommands;
 import frc.robot.commands.HangCommands;
+import frc.robot.commands.auton.PreloadCommand;
 import frc.robot.subsystems.HangSubSystem;
 import frc.robot.commands.drive.SwerveDriveCommand;
 import frc.robot.subsystems.*;
@@ -32,7 +34,9 @@ import static edu.wpi.first.wpilibj.XboxController.*;
 
 import java.util.List;
 
+import static frc.robot.Constants.ArmConstants.ARM_POSITIONS.NORMAL;
 import static frc.robot.Constants.ArmConstants.ARM_POSITIONS.SPEAKER;
+import static frc.robot.Constants.AutoConstants.SwervePathFollower;
 
 
 public class RobotContainer {
@@ -43,7 +47,7 @@ public class RobotContainer {
   private final ShootSubSystem shootSubSystem = new ShootSubSystem();
   private final ArmSubSystem armSubSystem = new ArmSubSystem();
   private final HangSubSystem hangSubSystem = new HangSubSystem();
-  private PositionManager positionManager = new PositionManager(armSubSystem,collectSubSystem,operatorController,SPEAKER);
+  private PositionManager positionManager = new PositionManager(armSubSystem,collectSubSystem,operatorController,NORMAL);
 
   private final Field2d field;
   private final SendableChooser <Command> autoChooser;
@@ -55,9 +59,26 @@ public class RobotContainer {
 
     field = new Field2d();
     SmartDashboard.putData("Field", field);
+    AutoBuilder.configureHolonomic(
+            swerveSubSystem::getPose,
+            swerveSubSystem::resetOdometry,
+            swerveSubSystem::getChassisSpeeds,
+            swerveSubSystem::setChassisSpeeds,
+            SwervePathFollower,
+            ()-> {
+              var alliance = DriverStation.getAlliance();
+              if(alliance.isPresent()){
+                return alliance.get() == DriverStation.Alliance.Red;
+              }
+              return false;
+            },
+            swerveSubSystem
+    );
     autoChooser = AutoBuilder.buildAutoChooser();
     NamedCommands.registerCommand("TestCommand",new PrintCommand("Hello World!"));
     NamedCommands.registerCommand("setAmpPosition",new PrintCommand("AMP"));
+    NamedCommands.registerCommand("Preload", new PreloadCommand(armSubSystem,shootSubSystem,collectSubSystem));
+
     SmartDashboard.putData("Auto Mode", autoChooser);
     selectAuto();
 
@@ -68,7 +89,7 @@ public class RobotContainer {
             driveController::getRightX,
             driveController::getPOV,
             driveController::getLeftBumper,
-            driveController::getAButton)); // Vision Detect.
+            driveController::getRightTriggerAxis)); // Vision Detect.
 
 
     collectSubSystem.setDefaultCommand(new CollectShootCommands(
@@ -105,12 +126,18 @@ public class RobotContainer {
   private void configureBindings() {
     new JoystickButton(driveController, kRightBumper.value) // Right Bumper
            .onTrue(new InstantCommand(swerveSubSystem::zeroGyro));
+
     new JoystickButton(operatorController,kX.value)
             .onTrue(positionManager.TargetAmpPosition());
-    new JoystickButton(operatorController,kA.value)
+
+    new JoystickButton(operatorController,kY.value)
             .onTrue(positionManager.TargetCollectPosition());
+
     new JoystickButton(operatorController,kB.value)
             .onTrue(positionManager.TargetSpeakerPosition());
+
+    new JoystickButton(operatorController,kA.value)
+            .onTrue(positionManager.TargetNormalPosition());
   }
 
   public Command getAutonomousCommand() {
@@ -118,8 +145,11 @@ public class RobotContainer {
   }
   private void selectAuto(){
 
-    autoChooser.setDefaultOption("BACK LEAVE",AutoBuilder.buildAuto("BACK_LEAVE"));
-    autoChooser.addOption("Mid Leave",AutoBuilder.buildAuto("MID_LEAVE"));
+    autoChooser.setDefaultOption("Mid Leave",AutoBuilder.buildAuto("MID_LEAVE"));
+    autoChooser.addOption("BACK LEAVE",AutoBuilder.buildAuto("BACK_LEAVE"));
+    NamedCommands.getCommand("Preload");
+
+
   }
 }
 
