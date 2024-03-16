@@ -13,9 +13,10 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import static frc.robot.Constants.ArmConstants.*;
 import static frc.robot.Constants.ArmConstants.ARM_POSITIONS.AMP;
+import static frc.robot.Constants.ArmConstants.ARM_POSITIONS.NORMAL;
 import static frc.robot.RobotMap.ArmMap.*;
 
-public class ArmSubSystem extends SubsystemBase {
+public class ArmSubsystem extends SubsystemBase {
     private CANSparkMax mLeftArmMotor;
     private CANSparkMax mRightArmMotor;
     private CANSparkFlex mWristMotor;
@@ -23,8 +24,9 @@ public class ArmSubSystem extends SubsystemBase {
     private AbsoluteEncoder mArmAbsoluteEncoder;
     private ArmFeedforward armFeedForward = new ArmFeedforward(ARM_KS,ARM_KG,ARM_KV,ARM_KA);
     private ArmFeedforward wristFeedForward = new ArmFeedforward(WRIST_KS,WRIST_KG,WRIST_KV,WRIST_KA);
+    private ARM_POSITIONS TurnpresentPosition = NORMAL;
 
-    public ArmSubSystem(){
+    public ArmSubsystem(){
         mLeftArmMotor = new CANSparkMax(ARM_LEFT_MOTOR_ID, MotorType.kBrushless);
         mRightArmMotor = new CANSparkMax(ARM_RIGHT_MOTOR_ID, MotorType.kBrushless);
         mWristMotor = new CANSparkFlex(WRIST_MOTOR_ID, CANSparkFlex.MotorType.kBrushless);
@@ -66,8 +68,8 @@ public class ArmSubSystem extends SubsystemBase {
 
         armMotor.setSoftLimit(SoftLimitDirection.kForward, ARM_FORWARD_LIMIT);
         armMotor.setSoftLimit(SoftLimitDirection.kReverse, ARM_REVERSE_LIMIT);
-        armMotor.enableSoftLimit(SoftLimitDirection.kForward,true);
-        armMotor.enableSoftLimit(SoftLimitDirection.kReverse,true);
+        armMotor.enableSoftLimit(SoftLimitDirection.kForward,false);
+        armMotor.enableSoftLimit(SoftLimitDirection.kReverse,false);
 
         armMotor.setIdleMode(IdleMode.kBrake);
 
@@ -86,16 +88,16 @@ public class ArmSubSystem extends SubsystemBase {
         mWristAbsoulteEncoder.setPositionConversionFactor(360);
         mWristAbsoulteEncoder.setZeroOffset(WRIST_OFFSET);
         
-        mWristMotor.getPIDController().setP(WRIST_UP_PID[0], 0);
-        mWristMotor.getPIDController().setI(WRIST_UP_PID[1], 0);
-        mWristMotor.getPIDController().setD(WRIST_UP_PID[2], 0);
+        mWristMotor.getPIDController().setP(WRIST_PID[0], 0);
+        mWristMotor.getPIDController().setI(WRIST_PID[1], 0);
+        mWristMotor.getPIDController().setD(WRIST_PID[2], 0);
 
         
         mWristMotor.setSmartCurrentLimit(WRIST_CURRENT_LIMIT);
         mWristMotor.setSoftLimit(SoftLimitDirection.kForward, WRIST_FORWARD_LIMIT);
         mWristMotor.setSoftLimit(SoftLimitDirection.kReverse, WRIST_REVERSE_LIMIT);
-        mWristMotor.enableSoftLimit(SoftLimitDirection.kForward,true);
-        mWristMotor.enableSoftLimit(SoftLimitDirection.kReverse,true);
+        mWristMotor.enableSoftLimit(SoftLimitDirection.kForward,false);
+        mWristMotor.enableSoftLimit(SoftLimitDirection.kReverse,false);
 
         mWristMotor.setIdleMode(IdleMode.kBrake);
 
@@ -175,6 +177,12 @@ public class ArmSubSystem extends SubsystemBase {
             setWristPosition(AMP);
         }
 
+    }
+    public void setPosition(ARM_POSITIONS position){
+        position = TurnpresentPosition;
+    }
+    public ARM_POSITIONS getPosition(){
+        return TurnpresentPosition;
     }
     @Override
     public void periodic() {

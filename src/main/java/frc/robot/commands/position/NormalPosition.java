@@ -2,7 +2,7 @@ package frc.robot.commands.position;
 
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.*;
-import frc.robot.subsystems.ArmSubSystem;
+import frc.robot.subsystems.ArmSubsystem;
 
 import static frc.robot.Constants.ArmConstants.ARM_POSITIONS;
 import static frc.robot.Constants.ArmConstants.ARM_POSITIONS.NORMAL;
@@ -10,12 +10,12 @@ import static frc.robot.Constants.JoyStickConstants.NORMAL_RUMBLE;
 import static frc.robot.Constants.JoyStickConstants.NOTICE_VALUE;
 
 public class NormalPosition extends SequentialCommandGroup {
-    private final ArmSubSystem armSubSystem;
+    private final ArmSubsystem armSubSystem;
     private final XboxController operatorController;
     private ARM_POSITIONS presentPosition;
     private double xOffset;
 
-    public NormalPosition(ArmSubSystem armSubSystem, XboxController operatorController, ARM_POSITIONS presentPosition){
+    public NormalPosition(ArmSubsystem armSubSystem, XboxController operatorController, ARM_POSITIONS presentPosition){
         this.armSubSystem = armSubSystem;
         this.operatorController = operatorController;
         this.presentPosition = presentPosition;

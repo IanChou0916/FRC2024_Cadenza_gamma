@@ -1,13 +1,13 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.HangSubSystem;
+import frc.robot.subsystems.HangSubsystem;
 
 import java.util.function.BooleanSupplier;
 import static frc.robot.Constants.HangConstants.*;
 
 public class HangCommands extends Command {
-    private final HangSubSystem hangSubSystem;
+    private final HangSubsystem hangSubSystem;
     private final BooleanSupplier leftForwardSup;
     private final BooleanSupplier leftReverseSup;
     private final BooleanSupplier rightForwardSup;
@@ -15,7 +15,7 @@ public class HangCommands extends Command {
 
 
     public HangCommands(
-            HangSubSystem hangSubSystem,
+            HangSubsystem hangSubSystem,
             BooleanSupplier leftForwardSup, BooleanSupplier leftReverseSup,
             BooleanSupplier rightForwardSup, BooleanSupplier rightReverseSup
             ){

@@ -7,21 +7,18 @@ import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.lib.motor.MotorConfig;
-import frc.robot.Constants;
-import frc.robot.RobotMap;
 
 import static frc.robot.Constants.ShootConstants.*;
 import static frc.robot.RobotMap.ShootMap.LEFT_SHOOTER;
 import static frc.robot.RobotMap.ShootMap.RIGHT_SHOOTER;
 
-public class ShootSubSystem extends SubsystemBase {
+public class ShootSubsystem extends SubsystemBase {
     private TalonFX mLeftShoooter;
     private TalonFX mRightShooter;
     private final VelocityVoltage shootVoltage = new VelocityVoltage(0);
     private boolean shootEnabled = false;
 
-    public ShootSubSystem(){
+    public ShootSubsystem(){
         mLeftShoooter = new TalonFX(LEFT_SHOOTER,"rio");
         mRightShooter = new TalonFX(RIGHT_SHOOTER,"rio");
         configShooter(mLeftShoooter,SHOOT_INVERTED);
@@ -38,7 +35,7 @@ public class ShootSubSystem extends SubsystemBase {
         config.CurrentLimits.StatorCurrentLimit = SHOOT_CURRENT_LIMIT;
         config.CurrentLimits.SupplyCurrentThreshold = SHOOT_CURRENT_LIMIT;
         config.CurrentLimits.SupplyTimeThreshold = 0.1;
-        config.MotorOutput.NeutralMode = NeutralModeValue.Coast;
+        config.MotorOutput.NeutralMode = SHOOT_NETURAL_MODE;
         config.MotorOutput.Inverted = inversion ? InvertedValue.Clockwise_Positive
                 :InvertedValue.CounterClockwise_Positive;
 
@@ -53,6 +50,11 @@ public class ShootSubSystem extends SubsystemBase {
     public void shootNote(){
         mLeftShoooter.setControl(shootVoltage.withVelocity(SHOOT_SPEED));
         mRightShooter.setControl(shootVoltage.withVelocity(SHOOT_SPEED));
+        shootEnabled = true;
+    }
+    public void reverseNote(){
+        mLeftShoooter.setControl(shootVoltage.withVelocity(SHOOT_REVERSE_SPEED));
+        mRightShooter.setControl(shootVoltage.withVelocity(SHOOT_REVERSE_SPEED));
         shootEnabled = true;
     }
     public void stopShoot(){

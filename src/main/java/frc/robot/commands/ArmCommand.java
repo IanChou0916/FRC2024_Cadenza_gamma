@@ -1,19 +1,18 @@
+
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
-import frc.robot.subsystems.ArmSubSystem;
+
+import frc.robot.subsystems.ArmSubsystem;
 
 import java.util.function.BooleanSupplier;
 import static frc.robot.Constants.ArmConstants.*;
 import static frc.robot.Constants.ArmConstants.ARM_POSITIONS.AMP;
 
-public class ArmCommands extends Command {
-    private final ArmSubSystem armSubSystem;
+public class ArmCommand extends Command {
+    private final ArmSubsystem armSubsystem;
     private final BooleanSupplier armAddSupplier;
     private final BooleanSupplier armMinusSupplier;
     private final BooleanSupplier wristAddSupplier;
@@ -24,23 +23,23 @@ public class ArmCommands extends Command {
     private final Timer timer = new Timer();
 
 
-    public ArmCommands(
-            ArmSubSystem armSubSystem,
+    public ArmCommand(
+            ArmSubsystem armSubsystem,
             BooleanSupplier armAddSupplier,
             BooleanSupplier armMinusSupplier,
             BooleanSupplier wristAddSupplier,
             BooleanSupplier wristmiunsSupplier){
-        this.armSubSystem = armSubSystem;
+        this.armSubsystem = armSubsystem;
         this.armAddSupplier = armAddSupplier;
         this.armMinusSupplier = armMinusSupplier;
         this.wristAddSupplier = wristAddSupplier;
         this.wristmiunsSupplier = wristmiunsSupplier;
-        addRequirements(armSubSystem);
+        addRequirements(armSubsystem);
     }
     @Override
     public void initialize(){
-        armAngle = armSubSystem.getArmAngle();
-        wristAngle = armSubSystem.getWristAngle();
+        armAngle = armSubsystem.getArmAngle();
+        wristAngle = armSubsystem.getWristAngle();
     }
 
     @Override
@@ -77,8 +76,8 @@ public class ArmCommands extends Command {
                 timer.restart();
             }
         }
-        armSubSystem.setArmPosition(armAngle);
-        armSubSystem.setWristPosition(wristAngle);
+        armSubsystem.setArmPosition(armAngle);
+        armSubsystem.setWristPosition(wristAngle);
         SmartDashboard.putNumber("armAngle",armAngle);
         SmartDashboard.putNumber("wristAngle",wristAngle);
 
@@ -93,7 +92,7 @@ public class ArmCommands extends Command {
         updateCommand();
     }
     private void updateCommand(){
-        armSubSystem.setDefaultCommand(this);
+        armSubsystem.setDefaultCommand(this);
     }
 
 

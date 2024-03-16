@@ -29,7 +29,7 @@ public class SwerveTypeConstants {
         this.canCoderInverted = canCoderInverted;
 
     }
-    public static SwerveTypeConstants SDSMK4I_L1(){
+    public static SwerveTypeConstants SDSMK4I_L2(){
         double wheelDiameter = Conversions.inchesToMeters(4.0);
 
         double driveGearRadio = SDSMK4I_L2_DRIVEGEAR;
