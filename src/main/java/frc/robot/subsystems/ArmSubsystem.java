@@ -13,9 +13,10 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import static frc.robot.Constants.ArmConstants.*;
 import static frc.robot.Constants.ArmConstants.ARM_POSITIONS.AMP;
+import static frc.robot.Constants.ArmConstants.ARM_POSITIONS.NORMAL;
 import static frc.robot.RobotMap.ArmMap.*;
 
-public class ArmSubSystem extends SubsystemBase {
+public class ArmSubsystem extends SubsystemBase {
     private CANSparkMax mLeftArmMotor;
     private CANSparkMax mRightArmMotor;
     private CANSparkFlex mWristMotor;
@@ -23,8 +24,9 @@ public class ArmSubSystem extends SubsystemBase {
     private AbsoluteEncoder mArmAbsoluteEncoder;
     private ArmFeedforward armFeedForward = new ArmFeedforward(ARM_KS,ARM_KG,ARM_KV,ARM_KA);
     private ArmFeedforward wristFeedForward = new ArmFeedforward(WRIST_KS,WRIST_KG,WRIST_KV,WRIST_KA);
+    private ARM_POSITIONS TurnpresentPosition = NORMAL;
 
-    public ArmSubSystem(){
+    public ArmSubsystem(){
         mLeftArmMotor = new CANSparkMax(ARM_LEFT_MOTOR_ID, MotorType.kBrushless);
         mRightArmMotor = new CANSparkMax(ARM_RIGHT_MOTOR_ID, MotorType.kBrushless);
         mWristMotor = new CANSparkFlex(WRIST_MOTOR_ID, CANSparkFlex.MotorType.kBrushless);
@@ -175,6 +177,12 @@ public class ArmSubSystem extends SubsystemBase {
             setWristPosition(AMP);
         }
 
+    }
+    public void setPosition(ARM_POSITIONS position){
+        position = TurnpresentPosition;
+    }
+    public ARM_POSITIONS getPosition(){
+        return TurnpresentPosition;
     }
     @Override
     public void periodic() {

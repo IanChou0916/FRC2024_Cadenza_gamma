@@ -27,6 +27,10 @@ public class Constants {
         public static final RumbleType SHOOT_RUMBLE = kRightRumble;
         public static final RumbleType NORMAL_RUMBLE = kLeftRumble;
     }
+
+    public static final class LEDConstants{
+        public final static byte LED_LENGTH = 60;
+    }
     public static final class SwerveConstants{
         public final static Rotation2d FRONT_LEFT_ANGLE_OFFSET = Rotation2d.fromRotations(0.405029);
         public final static Rotation2d BACK_LEFT_ANGLE_OFFSET = Rotation2d.fromRotations(0.743896);
@@ -34,7 +38,7 @@ public class Constants {
         public final static Rotation2d FRONT_RIGHT_ANGLE_OFFSET = Rotation2d.fromRotations(0.054199);
 
         //
-        public static final double SWERVE_CHASSIS_TRACKWIDTH_METERS = 0.62865;
+        public static final double SWERVE_CHASSIS_TRACKWIDTH_METERS = 0.62685;
         public static final double SWERVE_CHASSIS_WHEELBASE_METERS = 0.59825;
         public static final double SWERVE_WHEEL_CIRCUMFERENCE = Conversions.inchesToMeters(4.0) * Math.PI;
         public static final double SWERVE_MAX_SPEED = 4.7; //Wait for test.
@@ -79,8 +83,8 @@ public class Constants {
         //public static final double SWERVE_AUTO_Z_PID[] = {5.0, 0.0, 0.0}; // TODO : Using Tuner.
 
         public static final HolonomicPathFollowerConfig SwervePathFollower = new HolonomicPathFollowerConfig(
-                new PIDConstants(0.01, 0.006, 0.00001), // TODO : Using Tuner for XY.
-                new PIDConstants(0.001, 0.006, 0), // TODO : Using Tuner for Rotate.
+                new PIDConstants(0.05,0.0,0.0), // TODO : Using Tuner for XY.
+                new PIDConstants(0.05,0.0,0.0), // TODO : Using Tuner for Rotate.
                 SwerveConstants.SWERVE_MAX_SPEED, // MaxSpeed in m/s
                 0.4, // DriveBaseRadius
                 new ReplanningConfig()
@@ -94,7 +98,7 @@ public class Constants {
 
         public static final double COLLECT_SPEED = 9.0; // Rotates Per Second
         public static final double REVERSE_AMP_SPEED = -5.0; // Rotates Per Second
-        public static final double REVERSE_SHOOT_SPEED = -2.0; // Rotates Per Second
+        public static final double REVERSE_SHOOT_SPEED = -5.0; // Rotates Per Second
 
     }
     public static final class ShootConstants{
@@ -102,9 +106,10 @@ public class Constants {
         public static final double SHOOT_GEAR_RATIO = 2.0;
         public final static double[] SHOOT_PID = {0.003, 0.0, 0.0005,0.225};// TO DO : Using Tuner.
         public static final boolean SHOOT_INVERTED = true;
-        public static final double SHOOT_SPEED = 30; // 40 rotations per second.
+        public static final double SHOOT_SPEED = 35; // 40 rotations per second.
+        public static final double SHOOT_REVERSE_SPEED = -5;
         public static final int SHOOT_CURRENT_LIMIT = 40;
-        public static final NeutralModeValue SHOOT_NETURAL_MODE = NeutralModeValue.Brake;
+        public static final NeutralModeValue SHOOT_NETURAL_MODE = NeutralModeValue.Coast;
 
     }
 
@@ -133,7 +138,7 @@ public class Constants {
         public static final double WRIST_KA = 0.0012087/MAX_VOLTAGE;
 
         public static final double ARM_OFFSET = 10.837714;
-        public static final double WRIST_OFFSET = 159.7911644;
+        public static final double WRIST_OFFSET = 83.04471;
 
         public static final int ARM_CURRENT_LIMIT = 40;
         public static final int WRIST_CURRENT_LIMIT = 40;
@@ -158,12 +163,12 @@ public class Constants {
 
         public enum ARM_POSITIONS {
             // TODO : Source,FORWARD_SPEAKER Position TBD to use.
-            AMP(57.954227,112.152642),
+            AMP(50.974227,115.152642),
             SPEAKER(23.179,124.067119),
             COLLECT(7.6614913,111.3801208),
             SOURCE(46.36526,160.35238),
             FORWARD_SPEAKER(0,0),
-            NORMAL(42.2,60.63),
+            NORMAL(41.2,62.63),
             HANG(87.1,120.0);
             private double ArmPosition;
             private double WristPosition;

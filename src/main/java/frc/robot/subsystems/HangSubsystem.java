@@ -7,14 +7,14 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import static frc.robot.Constants.HangConstants.*;
 import static frc.robot.RobotMap.HangMap.*;
 
-public class HangSubSystem extends SubsystemBase {
+public class HangSubsystem extends SubsystemBase {
     private final CANSparkFlex mHangLeftMotor = new CANSparkFlex(HANG_LEFT_MOTOR, CANSparkLowLevel.MotorType.kBrushless);
     private final CANSparkFlex mHangRightMotor = new CANSparkFlex(HANG_RIGHT_MOTOR, CANSparkLowLevel.MotorType.kBrushless);
     private SparkLimitSwitch mLeftHangSwitch;
     private SparkLimitSwitch mRightHangSwitch;
 
 
-    public HangSubSystem(){
+    public HangSubsystem(){
         configHang(mHangLeftMotor,HANG_LEFT_INVERTED);
         configHang(mHangRightMotor,HANG_RIGHT_INVERTED);
 

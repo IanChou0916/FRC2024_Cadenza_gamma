@@ -1,6 +1,5 @@
 package frc.robot.subsystems;
 
-import com.revrobotics.CANSparkBase;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkBase.ControlType;
@@ -10,10 +9,9 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import static frc.robot.Constants.CollectConstants.*;
 
-import frc.lib.motor.MotorConfig;
 import static frc.robot.RobotMap.CollectMap.*;
 
-public class CollectSubSystem extends SubsystemBase {
+public class CollectSubsystem extends SubsystemBase {
   private static CANSparkMax mCollectIntake;
 
   private static RelativeEncoder mCollectEncoder;
@@ -22,7 +20,7 @@ public class CollectSubSystem extends SubsystemBase {
 
 
 
-  public CollectSubSystem() {
+  public CollectSubsystem() {
     mCollectIntake = new CANSparkMax(COLLECT_MOTOR_ID, CANSparkMax.MotorType.kBrushless);
     mCollectEncoder = mCollectIntake.getEncoder();
 

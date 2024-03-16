@@ -1,30 +1,34 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants;
-import frc.robot.PositionManager;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.CollectSubsystem;
 import frc.robot.subsystems.ShootSubsystem;
 
 import java.util.function.IntSupplier;
 
-public class CollectShootCommands extends Command {
+import static frc.robot.Constants.ArmConstants.ARM_POSITIONS.AMP;
+
+public class CollectShooTestCommands extends Command {
     private final IntSupplier collectSupplier;
     private final CollectSubsystem collectSubSystem;
+    private final ArmSubsystem armSubsystem;
     private final ShootSubsystem shootSubSystem;
 
 
-    public CollectShootCommands(
+    public CollectShooTestCommands(
             CollectSubsystem collectSubSystem,
             ShootSubsystem shootSubSystem,
-            //ArmSubsystem armSubsystem,
+            ArmSubsystem armSubsystem,
             IntSupplier collectSupplier ){
         this.collectSubSystem = collectSubSystem;
         this.shootSubSystem = shootSubSystem;
+        this.armSubsystem = armSubsystem;
         this.collectSupplier = collectSupplier;
+
         addRequirements(collectSubSystem);
         addRequirements(shootSubSystem);
+        addRequirements(armSubsystem);
     }
 
     @Override
@@ -51,8 +55,13 @@ public class CollectShootCommands extends Command {
                 break;
 
             case 270:
-
-                collectSubSystem.shootAMP();
+                if(armSubsystem.getPosition() == AMP) {
+                    collectSubSystem.shootAMP();
+                    shootSubSystem.reverseNote();
+                }
+                else {
+                    collectSubSystem.reverseCollect();
+                }
                 break;
 
 

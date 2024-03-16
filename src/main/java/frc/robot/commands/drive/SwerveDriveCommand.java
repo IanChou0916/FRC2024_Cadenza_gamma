@@ -5,7 +5,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.lib.util.LimelightHelpers;
-import frc.robot.subsystems.SwerveSubSystem;
+import frc.robot.subsystems.SwerveSubsystem;
 
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
@@ -17,7 +17,7 @@ import static frc.robot.Constants.VisionConstants.*;
 import static frc.robot.RobotMap.Vision.LIMELIGHT_CENTER_NAME;
 
 public class SwerveDriveCommand extends Command {
-    private final SwerveSubSystem swerveSubsystem;
+    private final SwerveSubsystem swerveSubsystem;
     private final DoubleSupplier translationSup;
     private final DoubleSupplier strafeSup;
     private final DoubleSupplier rotationSup;
@@ -27,7 +27,7 @@ public class SwerveDriveCommand extends Command {
     private final PIDController visionAimPID =
             new PIDController(VISION_AIM_KP,VISION_AIM_KI,VISION_AIM_KD);
     public SwerveDriveCommand(
-            SwerveSubSystem swerveSubsystem, DoubleSupplier translationSup,
+            SwerveSubsystem swerveSubsystem, DoubleSupplier translationSup,
             DoubleSupplier strafeSup, DoubleSupplier rotationSup,
             IntSupplier povSlowMoveSup, BooleanSupplier robotCentricSup,
             DoubleSupplier visionAimSup) {
