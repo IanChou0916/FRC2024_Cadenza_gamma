@@ -34,6 +34,8 @@ public class Constants {
 
     public static final class LEDConstants{
         public final static int LED_LENGTH = 60;
+        public final static int LED_WRIST = 9; // 0~9
+        public final static int LED_BACK = 28; //
         public static LEDState NORMAL_POSITION_COLOR = new LEDState(0,255,0);
         public static LEDState GET_NOTE_COLOR = new LEDState(255,0,0);
         public static LEDState BLINK_NOTE_COLOR =  new LEDState(0,0,0);
@@ -107,7 +109,7 @@ public class Constants {
         public static final double COLLECT_GEAR_RATIO = 1.0/15.0;
 
         public static final double COLLECT_SPEED = 9.0; // Rotates Per Second
-        public static final double REVERSE_AMP_SPEED = -5.0; // Rotates Per Second
+        public static final double REVERSE_AMP_SPEED = -9.0; // Rotates Per Second
         public static final double REVERSE_SHOOT_SPEED = -5.0; // Rotates Per Second
 
     }
@@ -175,7 +177,7 @@ public class Constants {
             COLLECT(1.7714913,111.3801208),
             SOURCE(46.36526,160.35238),
             FORWARD_SPEAKER(0,0),
-            NORMAL(41.2,62.63),
+            NORMAL(39.38,56.84259),
             HANG(87.1,120.0);
             private double ArmPosition;
             private double WristPosition;
@@ -206,7 +208,7 @@ public class Constants {
 
 
     public static final class VisionConstants{
-        public static final double VISION_POSE_TRUST_WORTHINESS = 1;
+        public static final double VISION_POSE_TRUST_WORTHINESS = 0.8;
         public static final double[] VISION_AIM_PID = {0.01,0,0};
 
         public static final double VISION_AIM_KP = 0.5;

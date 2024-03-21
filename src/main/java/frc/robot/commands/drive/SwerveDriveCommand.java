@@ -88,6 +88,7 @@ public class SwerveDriveCommand extends Command {
                 strafeVal = MathUtil.applyDeadband(strafeSup.getAsDouble(), DRIVE_JOYSTICK_DEADBAND);
         }
         double visionAimNum = LimelightHelpers.getTX(LIMELIGHT_CENTER_NAME);
+
         if ((visionAimSup.getAsDouble()>0.5) && visionAimNum!=0.0) {
             double vision_rotation = visionAimPID.calculate(visionAimNum, 0);
             /* Vision Drive */

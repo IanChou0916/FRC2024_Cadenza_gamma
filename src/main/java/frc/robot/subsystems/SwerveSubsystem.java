@@ -78,7 +78,7 @@ public class SwerveSubsystem extends SubsystemBase {
                 this::getChassisSpeeds,
                 this::setChassisSpeeds,
                 new HolonomicPathFollowerConfig(
-                        new PIDConstants(0.000005,0.006,0.000001), // TODO : Using Tuner for XY.
+                        new PIDConstants(5.0,0.0,0.1), // TODO : Using Tuner for XY.
                         new PIDConstants(0.5,0.0,0.0), // TODO : Using Tuner for Rotate.
                         4.7, // MaxSpeed in m/s
                         0.43, // DriveBaseRadius
@@ -184,6 +184,7 @@ public class SwerveSubsystem extends SubsystemBase {
     public void periodic() {
 
         swerveDriveOdometry.update(getYaw(), getModulePositions());
+        /*
         for(swerveModule module : swerveModules){
             SmartDashboard.putNumber("Mod " + module.moduleNumber + " CanCoder",module.getCanCoder().getDegrees());
             SmartDashboard.putNumber("Mod " + module.moduleNumber + " Integrated", module.getPosition().angle.getDegrees()%360);
@@ -194,6 +195,8 @@ public class SwerveSubsystem extends SubsystemBase {
 
         SmartDashboard.putString("O", swerveDriveOdometry.getPoseMeters().toString());
 
+
+         */
         // TODO : Tuning Completed.
         SmartDashboard.putNumber("Rotation",navX.getYaw());
     }

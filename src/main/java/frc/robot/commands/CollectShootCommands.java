@@ -87,9 +87,11 @@ public class CollectShootCommands extends Command {
             case 270:
                 if(collectSubSystem.getTuningPosition() == AMP){
                     collectSubSystem.shootAMP();
+                    shootSubSystem.reverseNote();
                 }
                 else {
                     collectSubSystem.reverseCollect();
+                    shootSubSystem.reverseNote();
                 }
 
                 break;

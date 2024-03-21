@@ -113,18 +113,14 @@ public class RobotContainer {
   }
 
   public void robotInit(){
-    //swerveSubSystem.zeroGyro();
+    swerveSubSystem.zeroGyro();
   }
 
   private void configureBindings() {
     new JoystickButton(driveController, kA.value) // Right Bumper
             .onTrue(new InstantCommand(swerveSubSystem::zeroGyro));
 
-    new JoystickButton(driveController, kRightBumper.value)
-            .whileTrue(new InstantCommand(()->{
-              shootSubSystem.reverseNote();
-              collectSubSystem.reverseCollect();
-            }));
+
 
     new JoystickButton(operatorController,kX.value)
             .onTrue(positionManager.TargetAmpPosition());
