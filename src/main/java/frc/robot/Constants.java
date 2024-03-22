@@ -98,7 +98,7 @@ public class Constants {
                 new PIDConstants(0.05,0.0,0.0), // TODO : Using Tuner for XY.
                 new PIDConstants(0.05,0.0,0.0), // TODO : Using Tuner for Rotate.
                 SwerveConstants.SWERVE_MAX_SPEED, // MaxSpeed in m/s
-                0.4, // DriveBaseRadius
+                0.43, // DriveBaseRadius
                 new ReplanningConfig()
         );
     }

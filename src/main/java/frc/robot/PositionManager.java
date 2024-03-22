@@ -12,7 +12,7 @@ import frc.robot.subsystems.CollectSubsystem;
 import static frc.robot.Constants.ArmConstants.*;
 import static frc.robot.Constants.ArmConstants.ARM_POSITIONS.*;
 
-public class PositionManager {
+public class PositionManager  {
     protected final ArmSubsystem armSubSystem;
     protected final CollectSubsystem collectSubSystem;
     protected final XboxController operatorController;

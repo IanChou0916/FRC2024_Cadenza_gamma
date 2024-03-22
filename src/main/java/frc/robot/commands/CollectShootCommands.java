@@ -98,15 +98,24 @@ public class CollectShootCommands extends Command {
             default:
                 if(!collectSubSystem.getCollectLimit()){
                     //operatorController.setRumble(GenericHID.RumbleType.kRightRumble,0.5);
-                    ledSubSystem.fillRGB(GET_NOTE_COLOR);
-                    ledSubSystem.write();
+                    timer.start();
+                    if(timer.get() > 0.1){
+                        ledSubSystem.fillRGB(GET_NOTE_COLOR);
+                        ledSubSystem.write();
+                    }
+                    else {
+                        ledSubSystem.fillRGB(NORMAL_POSITION_COLOR);
+                        ledSubSystem.write();
+                    }
+
                 }
                 else {
+                    timer.reset();
                     ledSubSystem.fillRGB(NORMAL_POSITION_COLOR);
                     ledSubSystem.write();
                     //operatorController.setRumble(GenericHID.RumbleType.kRightRumble,0);
                 }
+                
         }
-
     }
 }

@@ -25,30 +25,21 @@ public class CollectPosition extends SequentialCommandGroup {
 
         switch (presentPosition){
             case COLLECT -> addCommands(
-                    new InstantCommand(() -> operatorController.setRumble(COLLECT_RUMBLE, NOTICE_VALUE)),
-                    new WaitCommand(0.4),
-                    new InstantCommand(()->operatorController.setRumble(COLLECT_RUMBLE,0)),
-                    new PrintCommand("COLLECT Position Complete")
+                    noticeCollectCompleted()
             );
             case SPEAKER -> addCommands(
                     new InstantCommand(() -> armSubSystem.setArmPosition(COLLECT)),
                     new WaitUntilCommand(()-> (COLLECT.getArmPosition() - armSubSystem.getArmAngle() < 5)),
                     new InstantCommand(()-> armSubSystem.setWristPosition(COLLECT)),
                     new WaitUntilCommand(()-> (COLLECT.getWristPosition() - armSubSystem.getWristAngle() ) < 5),
-                    new InstantCommand(() -> operatorController.setRumble(COLLECT_RUMBLE, NOTICE_VALUE)),
-                    new WaitCommand(0.4),
-                    new InstantCommand(()->operatorController.setRumble(COLLECT_RUMBLE,0)),
-                    new PrintCommand("COLLECT Position Complete")
+                    noticeCollectCompleted()
             );
             case AMP -> addCommands(
                     new InstantCommand(() -> armSubSystem.setArmPosition(COLLECT.getArmPosition())),
                     new WaitUntilCommand(()-> (armSubSystem.getArmAngle() - COLLECT.getArmPosition() < 5)),
                     new InstantCommand(()-> armSubSystem.setWristPosition(COLLECT)),
                     new WaitUntilCommand(()-> (COLLECT.getWristPosition() - armSubSystem.getWristAngle() )< 5),
-                    new InstantCommand(() -> operatorController.setRumble(COLLECT_RUMBLE, NOTICE_VALUE)),
-                    new WaitCommand(0.4),
-                    new InstantCommand(()->operatorController.setRumble(COLLECT_RUMBLE,0)),
-                    new PrintCommand("COLLECT Position Complete")
+                    noticeCollectCompleted()
             );
             case NORMAL -> addCommands(
                     new InstantCommand(()-> armSubSystem.setWristPosition(COLLECT)),
@@ -56,10 +47,7 @@ public class CollectPosition extends SequentialCommandGroup {
                     new WaitCommand(0.25),
                     new InstantCommand(() -> armSubSystem.setArmPosition(COLLECT.getArmPosition())),
                     new WaitUntilCommand(()-> (armSubSystem.getArmAngle() - COLLECT.getArmPosition()) < 5),
-                    new InstantCommand(() -> operatorController.setRumble(COLLECT_RUMBLE, NOTICE_VALUE)),
-                    new WaitCommand(0.4),
-                    new InstantCommand(()->operatorController.setRumble(COLLECT_RUMBLE,0)),
-                    new PrintCommand("COLLECT Position Complete")
+                    noticeCollectCompleted()
             );
             default -> {
                 break;

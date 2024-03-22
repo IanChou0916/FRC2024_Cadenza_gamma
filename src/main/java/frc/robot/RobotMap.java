@@ -47,9 +47,9 @@ public class RobotMap {
         public static final int HANG_RIGHT_MOTOR = 6; // Vortex
     }
     public static final class Vision{
-        public final static String LIMELIGHT_CENTER_NAME = "limelight"; // Object Detection
+        public final static String LIMELIGHT_CENTER_NAME = "limelight-obj"; // Object Detection.
+        public final static String LIMELIGHT_ALIGNMENT = "limelight-apr"; // April Tag Detection.
 
     }
 
- // Using NEO and NEO 550.
 }
