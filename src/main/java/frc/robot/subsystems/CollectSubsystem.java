@@ -96,7 +96,7 @@ public class CollectSubsystem extends SubsystemBase {
   }
 
   public void setTuningPosition(ARM_POSITIONS configPosition){
-    configPosition = tuningPosition;
+    tuningPosition = configPosition;
   }
   public ARM_POSITIONS getTuningPosition(){
     return tuningPosition;
@@ -106,9 +106,10 @@ public class CollectSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("Collect Speed", mCollectIntake.getEncoder().getVelocity());
-    SmartDashboard.putNumber("Collect Position", mCollectIntake.getEncoder().getPosition());
+    //SmartDashboard.putNumber("Collect Speed", mCollectIntake.getEncoder().getVelocity());
+    //SmartDashboard.putNumber("Collect Position", mCollectIntake.getEncoder().getPosition());
     SmartDashboard.putBoolean("Receive",getCollectLimit());
+    SmartDashboard.putString("TuningPosition",tuningPosition.toString());
   }
 
 }

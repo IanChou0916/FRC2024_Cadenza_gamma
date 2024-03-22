@@ -11,6 +11,7 @@ import static frc.robot.Constants.ArmConstants.ARM_POSITIONS.SPEAKER;
 public class SpeakerPosition extends SequentialCommandGroup {
     private final ArmSubsystem armSubSystem;
     private final XboxController operatorController;
+
     private ARM_POSITIONS presentPosition;
     private double xOffset;
 
@@ -27,36 +28,24 @@ public class SpeakerPosition extends SequentialCommandGroup {
                     new WaitUntilCommand(()-> (SPEAKER.getArmPosition() - armSubSystem.getArmAngle() < 5)),
                     new InstantCommand(()-> armSubSystem.setWristPosition(SPEAKER)),
                     new WaitUntilCommand(()-> Math.abs(SPEAKER.getWristPosition() - armSubSystem.getWristAngle() ) < 4),
-                    new InstantCommand(() -> operatorController.setRumble(GenericHID.RumbleType.kRightRumble, 0.5)),
-                    new WaitCommand(0.4),
-                    new InstantCommand(()->operatorController.setRumble(GenericHID.RumbleType.kRightRumble,0)),
-                    new PrintCommand("Speaker Position Complete")
+                    noticeSpeakerPosition()
             );
             case SPEAKER -> addCommands(
-                    new InstantCommand(() -> operatorController.setRumble(GenericHID.RumbleType.kRightRumble, 0.5)),
-                    new WaitCommand(0.4),
-                    new InstantCommand(()->operatorController.setRumble(GenericHID.RumbleType.kRightRumble,0)),
-                    new PrintCommand("Speaker Position Complete")
+                    noticeSpeakerPosition()
             );
             case AMP -> addCommands(
                     new InstantCommand(() -> armSubSystem.setWristPosition(SPEAKER)),
                     new WaitUntilCommand(()->Math.abs(SPEAKER.getWristPosition() - armSubSystem.getWristAngle() )< 5),
                     new InstantCommand(()-> armSubSystem.setArmPosition(SPEAKER)),
                     new WaitUntilCommand(()-> Math.abs(SPEAKER.getArmPosition() - armSubSystem.getArmAngle() )< 5),
-                    new InstantCommand(() -> operatorController.setRumble(GenericHID.RumbleType.kRightRumble, 0.5)),
-                    new WaitCommand(0.4),
-                    new InstantCommand(()->operatorController.setRumble(GenericHID.RumbleType.kRightRumble,0)),
-                    new PrintCommand("Speaker Position Complete")
+                    noticeSpeakerPosition()
             );
             case NORMAL -> addCommands(
                     new InstantCommand(() -> armSubSystem.setWristPosition(SPEAKER)),
                     new WaitUntilCommand(()->Math.abs(SPEAKER.getWristPosition() - armSubSystem.getWristAngle() )< 6),
                     new InstantCommand(()-> armSubSystem.setArmPosition(SPEAKER)),
                     new WaitUntilCommand(()-> Math.abs(SPEAKER.getArmPosition() - armSubSystem.getArmAngle() )< 5),
-                    new InstantCommand(() -> operatorController.setRumble(GenericHID.RumbleType.kRightRumble, 0.5)),
-                    new WaitCommand(0.4),
-                    new InstantCommand(()->operatorController.setRumble(GenericHID.RumbleType.kRightRumble,0)),
-                    new PrintCommand("Speaker Position Complete")
+                    noticeSpeakerPosition()
             );
             default -> {
                 break;

@@ -23,40 +23,28 @@ public class NormalPosition extends SequentialCommandGroup {
 
         switch (presentPosition){
             case NORMAL -> addCommands(
-                    new InstantCommand(() -> operatorController.setRumble(NORMAL_RUMBLE, NOTICE_VALUE)),
-                    new WaitCommand(0.4),
-                    new InstantCommand(()->operatorController.setRumble(NORMAL_RUMBLE,0)),
-                    new PrintCommand("NORMAL Position Complete")
+                    noticeNormalCompleted()
             );
             case SPEAKER -> addCommands(
                     new InstantCommand(() -> armSubSystem.setArmPosition(NORMAL)),
                     new WaitUntilCommand(()-> (NORMAL.getArmPosition() - armSubSystem.getArmAngle()) < 5),
                     new InstantCommand(()-> armSubSystem.setWristPosition(NORMAL)),
                     new WaitUntilCommand(()-> (NORMAL.getWristPosition() - armSubSystem.getWristAngle() ) < 3),
-                    new InstantCommand(() -> operatorController.setRumble(NORMAL_RUMBLE, NOTICE_VALUE)),
-                    new WaitCommand(0.4),
-                    new InstantCommand(()->operatorController.setRumble(NORMAL_RUMBLE,0)),
-                    new PrintCommand("NORMAL Position Complete")
+                    noticeNormalCompleted()
             );
             case AMP -> addCommands(
                     new InstantCommand(() -> armSubSystem.setArmPosition(NORMAL.getArmPosition())),
                     new WaitUntilCommand(()-> (armSubSystem.getArmAngle() - NORMAL.getArmPosition()) < 15),
                     new InstantCommand(()-> armSubSystem.setWristPosition(NORMAL)),
                     new WaitUntilCommand(()-> (NORMAL.getWristPosition() - armSubSystem.getWristAngle() )< 3),
-                    new InstantCommand(() -> operatorController.setRumble(NORMAL_RUMBLE, NOTICE_VALUE)),
-                    new WaitCommand(0.4),
-                    new InstantCommand(()->operatorController.setRumble(NORMAL_RUMBLE,0)),
-                    new PrintCommand("NORMAL Position Complete")
+                    noticeNormalCompleted()
             );
             case COLLECT -> addCommands(
                     new InstantCommand(()-> armSubSystem.setWristPosition(NORMAL)),
                     new WaitUntilCommand(()-> (NORMAL.getWristPosition() - armSubSystem.getWristAngle() )< 4),
                     new InstantCommand(() -> armSubSystem.setArmPosition(NORMAL.getArmPosition())),
                     new WaitUntilCommand(()-> (armSubSystem.getArmAngle() - NORMAL.getArmPosition()) < 4),
-                    new InstantCommand(() -> operatorController.setRumble(NORMAL_RUMBLE, NOTICE_VALUE)),
-                    new WaitCommand(0.4),
-                    new InstantCommand(()->operatorController.setRumble(NORMAL_RUMBLE,0)),
-                    new PrintCommand("NORMAL Position Complete")
+                    noticeNormalCompleted()
             );
             default -> {
                 break;

@@ -4,6 +4,7 @@ import com.kauailabs.navx.frc.AHRS;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
+import com.pathplanner.lib.util.PathPlannerLogging;
 import com.pathplanner.lib.util.ReplanningConfig;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -21,6 +22,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.lib.util.SwerveTypeConstants;
 import frc.robot.Constants;
 
+import static frc.robot.Constants.AutoConstants.SwervePathFollower;
 import static frc.robot.RobotMap.*;
 
 import static frc.robot.Constants.NAVX_INVERTED;
@@ -78,13 +80,12 @@ public class SwerveSubsystem extends SubsystemBase {
                 this::getChassisSpeeds,
                 this::setChassisSpeeds,
                 new HolonomicPathFollowerConfig(
-                        new PIDConstants(5.0,0.0,0.1), // TODO : Using Tuner for XY.
-                        new PIDConstants(0.5,0.0,0.0), // TODO : Using Tuner for Rotate.
-                        4.7, // MaxSpeed in m/s
+                        new PIDConstants(5.0,0.0,0.0), // TODO : Using Tuner for XY.
+                        new PIDConstants(5.0,0.0,0.0),
+                        Constants.SwerveConstants.SWERVE_MAX_SPEED, // MaxSpeed in m/s
                         0.43, // DriveBaseRadius
                         new ReplanningConfig()
-                ),
-
+                        ),
                 ()-> {
                     var alliance = DriverStation.getAlliance();
                     if(alliance.isPresent()){
@@ -94,6 +95,9 @@ public class SwerveSubsystem extends SubsystemBase {
                 },
                 this
         );
+
+
+
 
 
     }

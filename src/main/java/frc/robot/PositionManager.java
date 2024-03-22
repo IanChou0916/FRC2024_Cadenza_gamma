@@ -12,7 +12,7 @@ import frc.robot.subsystems.CollectSubsystem;
 import static frc.robot.Constants.ArmConstants.*;
 import static frc.robot.Constants.ArmConstants.ARM_POSITIONS.*;
 
-public class PositionManager {
+public class PositionManager  {
     protected final ArmSubsystem armSubSystem;
     protected final CollectSubsystem collectSubSystem;
     protected final XboxController operatorController;
@@ -45,21 +45,25 @@ public class PositionManager {
     public SequentialCommandGroup TargetAmpPosition(){
         AmpPosition ampPosition = new AmpPosition(armSubSystem,operatorController,presentPosition);
         setPresentPosition(AMP);
+        collectSubSystem.setTuningPosition(AMP);
         return ampPosition;
     }
     public SequentialCommandGroup TargetCollectPosition(){
         CollectPosition collectPosition = new CollectPosition(armSubSystem,operatorController,presentPosition);
         setPresentPosition(COLLECT);
+        collectSubSystem.setTuningPosition(COLLECT);
         return collectPosition;
     }
     public SequentialCommandGroup TargetSpeakerPosition(){
         SpeakerPosition speakerPosition = new SpeakerPosition(armSubSystem,operatorController,presentPosition);
         setPresentPosition(SPEAKER);
+        collectSubSystem.setTuningPosition(SPEAKER);
         return speakerPosition;
     }
     public SequentialCommandGroup TargetNormalPosition(){
         NormalPosition normalPosition = new NormalPosition(armSubSystem,operatorController,presentPosition);
         setPresentPosition(NORMAL);
+        collectSubSystem.setTuningPosition(NORMAL);
         return normalPosition;
     }
 

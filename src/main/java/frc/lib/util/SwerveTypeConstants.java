@@ -9,7 +9,7 @@ public class SwerveTypeConstants {
     public final double wheelCircumference;
     public final double angleGearRadio;
     public final double driveGearRadio;
-    public final double anglePIDF[]; // [P, I, D]
+    public final double[] anglePIDF; // [P, I, D]
 
     public final InvertedValue angleMotorInverted;
     public final InvertedValue driveMotorInverted;

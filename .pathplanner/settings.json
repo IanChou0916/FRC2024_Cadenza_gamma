@@ -8,7 +8,9 @@
     "Back"
   ],
   "autoFolders": [
-    "MID"
+    "Front",
+    "MID",
+    "Back"
   ],
   "defaultMaxVel": 4.7,
   "defaultMaxAccel": 3.0,

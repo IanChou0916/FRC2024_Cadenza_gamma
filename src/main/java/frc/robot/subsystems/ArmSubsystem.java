@@ -165,19 +165,6 @@ public class ArmSubsystem extends SubsystemBase {
         return mWristAbsoulteEncoder.getPosition();
     }
 
-    private void resetToAMP(){
-        if(getArmAngle() > 50){
-            setWristPosition(AMP);
-            if(Math.abs(AMP.getWristPosition() - getWristAngle()) < 15){
-                setArmPosition(AMP);
-            }
-        }
-        else {
-            setArmPosition(AMP);
-            setWristPosition(AMP);
-        }
-
-    }
     public void setPosition(ARM_POSITIONS position){
         position = TurnpresentPosition;
     }

@@ -34,16 +34,16 @@ public class HangCommands extends Command {
     @Override
     public void execute(){
         if(leftForwardSup.getAsBoolean()){
-            hangSubSystem.setLeftHangMotor(HANG_SPEED);
+            hangSubSystem.setLeftHangMotor(HANG_UP_SPEED);
         }
         if(leftReverseSup.getAsBoolean()){
-            hangSubSystem.setLeftHangMotor(-HANG_SPEED);
+            hangSubSystem.setLeftHangMotor(HANG_DOWN_SPEED);
         }
         if(rightForwardSup.getAsBoolean()){
-            hangSubSystem.setRightHangMotor(HANG_SPEED);
+            hangSubSystem.setRightHangMotor(HANG_UP_SPEED);
         }
         if(rightReverseSup.getAsBoolean()){
-            hangSubSystem.setRightHangMotor(-HANG_SPEED);
+            hangSubSystem.setRightHangMotor(HANG_DOWN_SPEED);
         }
         if(!leftForwardSup.getAsBoolean() && !rightForwardSup.getAsBoolean() && !leftReverseSup.getAsBoolean() && !rightReverseSup.getAsBoolean()){
             hangSubSystem.stopHangMotor();

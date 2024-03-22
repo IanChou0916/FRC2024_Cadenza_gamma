@@ -95,10 +95,10 @@ public class Constants {
         //public static final double SWERVE_AUTO_Z_PID[] = {5.0, 0.0, 0.0}; // TODO : Using Tuner.
 
         public static final HolonomicPathFollowerConfig SwervePathFollower = new HolonomicPathFollowerConfig(
-                new PIDConstants(0.05,0.0,0.0), // TODO : Using Tuner for XY.
-                new PIDConstants(0.05,0.0,0.0), // TODO : Using Tuner for Rotate.
+                new PIDConstants(0.00005,0.0,0.0006), // TODO : Using Tuner for XY.
+                new PIDConstants(0.3,0.0,0.0001), // TODO : Using Tuner for Rotate.
                 SwerveConstants.SWERVE_MAX_SPEED, // MaxSpeed in m/s
-                0.4, // DriveBaseRadius
+                0.43, // DriveBaseRadius
                 new ReplanningConfig()
         );
     }
@@ -109,7 +109,7 @@ public class Constants {
         public static final double COLLECT_GEAR_RATIO = 1.0/15.0;
 
         public static final double COLLECT_SPEED = 9.0; // Rotates Per Second
-        public static final double REVERSE_AMP_SPEED = -9.0; // Rotates Per Second
+        public static final double REVERSE_AMP_SPEED = -10.0; // Rotates Per Second
         public static final double REVERSE_SHOOT_SPEED = -5.0; // Rotates Per Second
 
     }
@@ -147,7 +147,7 @@ public class Constants {
         public static final double WRIST_KA = 0.0012087/MAX_VOLTAGE;
 
         public static final double ARM_OFFSET = 10.837714;
-        public static final double WRIST_OFFSET = 91.0173187;
+        public static final double WRIST_OFFSET = 83.2867070;
 
         public static final int ARM_CURRENT_LIMIT = 40;
         public static final int WRIST_CURRENT_LIMIT = 40;
@@ -172,12 +172,12 @@ public class Constants {
 
         public enum ARM_POSITIONS {
             // TODO : Source,FORWARD_SPEAKER Position TBD to use.
-            AMP(55.359418,99.345542),
+            AMP(55.359418,105.548242),
             SPEAKER(23.549,114.167119),
-            COLLECT(1.7714913,111.3801208),
+            COLLECT(4.24463,113.385940),
             SOURCE(46.36526,160.35238),
             FORWARD_SPEAKER(0,0),
-            NORMAL(39.38,56.84259),
+            NORMAL(42.585,62.587),
             HANG(87.1,120.0);
             private double ArmPosition;
             private double WristPosition;
@@ -200,9 +200,10 @@ public class Constants {
         public static final int HANG_CURRENT_LIMIT = 35;
         public static final CANSparkBase.IdleMode HANG_NEUTRAL_MODE = CANSparkBase.IdleMode.kBrake;
         public static final double HANG_GEAR_RATIO =1.0/64.0;
-        public static final boolean HANG_LEFT_INVERTED = true;
+        public static final boolean HANG_LEFT_INVERTED = false;
         public static final boolean HANG_RIGHT_INVERTED = false;
-        public static final double HANG_SPEED = 1.0; // Rotates Per Second
+        public static final double HANG_UP_SPEED = 2.0; // Rotates Per Second
+        public static final double HANG_DOWN_SPEED = -1.0;
     }
 
 
@@ -211,7 +212,7 @@ public class Constants {
         public static final double VISION_POSE_TRUST_WORTHINESS = 0.8;
         public static final double[] VISION_AIM_PID = {0.01,0,0};
 
-        public static final double VISION_AIM_KP = 0.5;
+        public static final double VISION_AIM_KP = 0.05;
         public static final double VISION_AIM_KI = 0;
         public static final double VISION_AIM_KD = 0;
         public static final double VISION_AIM_TOLERANCE = 0;
