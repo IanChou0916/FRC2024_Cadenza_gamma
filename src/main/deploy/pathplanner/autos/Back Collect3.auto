@@ -1,0 +1,61 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 0.6590215649597295,
+      "y": 4.360056484318403
+    },
+    "rotation": 118.70330513983868
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "Preload"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Back To Collect"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.0
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ToSpeaker"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Collect To Back"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShootNote"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Copy of Back To Collect"
+          }
+        }
+      ]
+    }
+  },
+  "folder": "Back",
+  "choreoAuto": false
+}

@@ -1,0 +1,37 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 0.7518415036830074,
+      "y": 4.38310802547531
+    },
+    "rotation": -56.09372301155785
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "Preload"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.5
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Back Far Leave"
+          }
+        }
+      ]
+    }
+  },
+  "folder": "Back",
+  "choreoAuto": false
+}

@@ -1,0 +1,25 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 0.743088057543912,
+      "y": 6.6718208042880836
+    },
+    "rotation": 56.9862542936068
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Front_To_Amp"
+          }
+        }
+      ]
+    }
+  },
+  "folder": "Front",
+  "choreoAuto": false
+}
