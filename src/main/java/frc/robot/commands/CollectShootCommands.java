@@ -7,9 +7,10 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.subsystems.ArmSubsystem;
+
 import frc.robot.subsystems.CollectSubsystem;
 import frc.robot.subsystems.LedSubsystem;
 import frc.robot.subsystems.ShootSubsystem;
@@ -67,13 +68,15 @@ public class CollectShootCommands extends Command {
         }
         switch(collectSupplier.getAsInt()){
             case 0:
-                shootSubSystem.shootNote();
+
+                shootNoteSequence();
 
                 break;
 
             case 90:
+                collectNoteSequence();
                 // TODO : added LED subSystem to notify drivers.
-
+                /* 
                 collectSubSystem.collectNote();
                 if(!collectSubSystem.getCollectLimit()){
                     //operatorController.setRumble(GenericHID.RumbleType.kRightRumble,0.5);
@@ -92,6 +95,7 @@ public class CollectShootCommands extends Command {
 
                 //shootSubSystem.reverseNote();
                 break;
+                */
 
             case 180:
 
@@ -138,6 +142,31 @@ public class CollectShootCommands extends Command {
                 new WaitCommand(2.0),
                 new InstantCommand(()->ledSubSystem.fillRGB(NORMAL_POSITION_COLOR))
 
+        );
+    }
+
+    private SequentialCommandGroup collectNoteSequence() {
+        return new SequentialCommandGroup(
+                new InstantCommand(()->collectSubSystem.collectNote()),
+                new WaitCommand(2.0),
+                new InstantCommand(()->collectSubSystem.stopCollect())
+        );
+    }
+    private SequentialCommandGroup shootNoteSequence() {
+        return new SequentialCommandGroup(
+                new ParallelCommandGroup(
+                    new InstantCommand(shootSubSystem::reverseNote),
+                    new InstantCommand(()-> ledSubSystem.fillRGB(SPEAKER_POSITION_COLOR))
+                ),
+                new WaitCommand(0.1),
+                new InstantCommand(shootSubSystem::shootNote),
+                new WaitCommand(1.0),
+                new InstantCommand(collectSubSystem::collectNote),
+                new ParallelCommandGroup(
+                        new InstantCommand(shootSubSystem::stopShoot),
+                        new InstantCommand(collectSubSystem::stopCollect),
+                        new InstantCommand(()-> ledSubSystem.fillRGB(NORMAL_POSITION_COLOR))
+                )
         );
     }
 }

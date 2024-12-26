@@ -97,9 +97,6 @@ public class RobotContainer {
     ));
 
      */
-
-
-
     armSubSystem.setDefaultCommand(new ArmCommand(
             armSubSystem,
             operatorController::getStartButton,
@@ -107,8 +104,6 @@ public class RobotContainer {
             operatorController::getLeftBumper,
             operatorController::getRightBumper
     ));
-
-
 
 
     hangSubSystem.setDefaultCommand(new HangCommands(
