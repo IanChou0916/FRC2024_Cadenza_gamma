@@ -62,6 +62,12 @@ public class ShootSubsystem extends SubsystemBase {
         mRightShooter.set(0);
         shootEnabled = false;
     }
+    public double getVelocity(){
+        return mLeftShoooter.getVelocity().getValue();
+    }
+    public boolean shootNoteLimit(){
+        return getVelocity() >= (SHOOT_SPEED - 5);
+    }
 
     @Override
     public void periodic() {

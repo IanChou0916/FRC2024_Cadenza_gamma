@@ -9,6 +9,7 @@ import com.revrobotics.CANSparkBase;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import frc.lib.convert.Conversions;
 import frc.lib.util.LEDState;
@@ -121,7 +122,13 @@ public class Constants {
         public static final double SHOOT_SPEED = 35; // 40 rotations per second.
         public static final double SHOOT_REVERSE_SPEED = -3;
         public static final int SHOOT_CURRENT_LIMIT = 40;
-        public static final NeutralModeValue SHOOT_NETURAL_MODE = NeutralModeValue.Coast;
+        public static final NeutralModeValue SHOOT_NETURAL_MODE = NeutralModeValue.Brake;
+
+        public static enum SHOOT_POSITIONS {
+            COLLECT,
+            AMP,
+            SPEAKER
+        }
 
     }
 

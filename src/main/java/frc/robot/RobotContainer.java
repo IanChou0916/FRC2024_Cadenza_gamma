@@ -12,16 +12,21 @@ import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.util.PathPlannerLogging;
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.*;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.lib.util.LimelightHelpers;
+import frc.robot.Constants.ArmConstants.ARM_POSITIONS;
+import frc.robot.Constants.ShootConstants.SHOOT_POSITIONS;
 import frc.robot.commands.ArmCommand;
 import frc.robot.commands.CollectShootCommands;
 import frc.robot.commands.HangCommands;
+import frc.robot.commands.ShootSequence;
 import frc.robot.commands.auton.CollectCommand;
 import frc.robot.commands.auton.PreloadCommand;
 import frc.robot.commands.auton.ShootNote;
@@ -32,9 +37,12 @@ import frc.robot.commands.drive.SwerveDriveCommand;
 import frc.robot.subsystems.*;
 
 
+
 import static edu.wpi.first.wpilibj.XboxController.Button.*;
 
 import static frc.robot.Constants.ArmConstants.ARM_POSITIONS.*;
+import static frc.robot.Constants.LEDConstants.NORMAL_POSITION_COLOR;
+import static frc.robot.Constants.ShootConstants.SHOOT_POSITIONS.*;
 import static frc.robot.RobotMap.Vision.LIMELIGHT_ALIGNMENT;
 
 
@@ -79,6 +87,9 @@ public class RobotContainer {
             driveController::getRightTriggerAxis)); // Vision Detect.
 
 
+    /**
+     * 
+     * 
     collectSubSystem.setDefaultCommand(new CollectShootCommands(
             collectSubSystem,
             shootSubSystem,
@@ -86,17 +97,7 @@ public class RobotContainer {
             operatorController::getPOV,
             operatorController::getLeftTriggerAxis
     ));
-
-    /*
-
-    collectSubSystem.setDefaultCommand(new CollectShooTestCommands(
-            collectSubSystem,
-            shootSubSystem,
-            armSubSystem,
-            operatorController::getPOV
-    ));
-
-     */
+    **/
     armSubSystem.setDefaultCommand(new ArmCommand(
             armSubSystem,
             operatorController::getStartButton,
@@ -138,8 +139,12 @@ public class RobotContainer {
 
     new JoystickButton(operatorController,kA.value)
             .onTrue(positionManager.TargetNormalPosition());
-
-
+    new POVButton(operatorController, 0)
+            .onTrue(new ShootSequence(collectSubSystem,shootSubSystem,ledSubsystem,SHOOT_POSITIONS.SPEAKER));
+    new POVButton(operatorController, 180)
+            .onTrue(new ShootSequence(collectSubSystem,shootSubSystem,ledSubsystem,SHOOT_POSITIONS.COLLECT));
+    new POVButton(operatorController, 90)
+            .onTrue(new ShootSequence(collectSubSystem,shootSubSystem,ledSubsystem,SHOOT_POSITIONS.AMP));
 
   }
 
@@ -159,9 +164,9 @@ public class RobotContainer {
 
     NamedCommands.registerCommand("Preload", new PreloadCommand(armSubSystem,shootSubSystem,collectSubSystem));
     NamedCommands.registerCommand("Collect",new CollectCommand(shootSubSystem,collectSubSystem));
-    NamedCommands.registerCommand("CollectPosition",new CollectPosition(armSubSystem,operatorController,SPEAKER));
+    NamedCommands.registerCommand("CollectPosition",new CollectPosition(armSubSystem,operatorController,ARM_POSITIONS.SPEAKER));
     NamedCommands.registerCommand("ShootNote",new ShootNote(shootSubSystem,collectSubSystem));
-    NamedCommands.registerCommand("ToSpeaker",new SpeakerPosition(armSubSystem,operatorController,COLLECT));
+    NamedCommands.registerCommand("ToSpeaker",new SpeakerPosition(armSubSystem,operatorController,ARM_POSITIONS.COLLECT));
     NamedCommands.registerCommand("Start",new PrintCommand("Auto Start."));
     NamedCommands.registerCommand("setAmpPosition", new PrintCommand("AMP"));
 
@@ -194,6 +199,7 @@ public class RobotContainer {
   public void teleopInit(){
     enableLimeLightLED();
     swerveSubSystem.resetModulesToAbsolute();
+    ledSubsystem.fillRGB(NORMAL_POSITION_COLOR);
 
   }
 
